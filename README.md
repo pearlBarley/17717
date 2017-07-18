@@ -1,14 +1,14 @@
 
 # 17717
 
-###HOW TO START
+### HOW TO START
 
-####START THE EXPO PROJECT bamboo
+#### START THE EXPO PROJECT bamboo
 the expo project creact by create-react-native-app -- a npm module
 Create React Native App will allow users to start React Native project to development and debugging , even they install Xcode or Android Studio not yet in the Linux or Windows environment.
 please visit [create-react-native-app](https://github.com/react-community/create-react-native-app) for detail
 
-#####NECESSARY ENVIROMENT
+##### NECESSARY ENVIROMENT
 
 node
 npm or yarn
@@ -18,20 +18,20 @@ android environment or ios environment
 then start your simulator 
 or install the Expo app in your phone, please visit https://expo.io. keep your phone on the same local network as this computer.
 
-#####COMMAND
+##### COMMAND
 ```
 $ cd bamboo
 $ yarn install
 $ yarn start
 ```
-#####EFFECT
+##### EFFECT
 the app will display in your simulator or your phone
 
 
-####START THE NORMAL REACT NATIVE PROJECT hammock
+#### START THE NORMAL REACT NATIVE PROJECT hammock
 the normal react native project create by commond call 'react-native init'
 
-#####NECESSARY ENVIROMENT
+##### NECESSARY ENVIROMENT
 
 node
 npm or yarn
@@ -41,11 +41,11 @@ android environment or ios environment
 then start your simulator 
 or connect your phone and computer with usb
 
-#####COMMAND
+##### COMMAND
 ```
 $ cd hammock
 $ yarn install
 $ react-native run-android or react-native run-ios
 ```
-#####EFFECT
+##### EFFECT
 the app will display in your simulator or your phone
