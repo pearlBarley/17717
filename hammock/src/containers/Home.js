@@ -8,6 +8,7 @@ import{
     Button,
     ScrollView 
   }from 'react-native'
+import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -54,6 +55,7 @@ class Home extends React.Component {
             <Button onPress={() => { Actions.tab_personalinfo({ data: 'tab_personalinfo!' }); }} title='Switch to tab_personalinfo' /> 
             <Button onPress={() => { Actions.error({ data: 'error!' }); }} title='Switch to error' /> 
             <Button onPress={() => { Actions.echoview({ data: 'echoview!' }); }} title='Switch to echoview' /> 
+            <Button onPress={() => { this.props.dispatch(NavigationActions.navigate({ routeName: 'tab_inbox' })); }} title='Switch to tab_inbox' /> 
 
       </ScrollView>
     )

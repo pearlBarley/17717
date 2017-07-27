@@ -4,7 +4,8 @@ import React from 'react';
 
 class TabIcon extends React.Component {
   render () {
-    var color = this.props.selected ? '#FF3366' : '#FFB3B3'
+    //var color = this.props.selected ? '#FF3366' : '#FFB3B3'
+    var color = this.props.selected ? '#000' : '#DDD'
     return (
       <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', alignSelf: 'center'}}>
         <Icon style={{color: color}} name={this.props.iconName} size={30} />
