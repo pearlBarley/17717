@@ -3,7 +3,7 @@
 
 ###DEMO
 
-![image](https://github.com/pearlBarley/17717/hammock/src/assets/img/projectDemo.jpg)
+![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/projectDemo.jpg)
 
 ### HOW TO START
 
