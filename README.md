@@ -1,6 +1,10 @@
 
 # 17717
 
+###DEMO
+
+![image](https://github.com/pearlBarley/17717/hammock/src/assets/img/projectDemo.jpg)
+
 ### HOW TO START
 
 #### START THE EXPO PROJECT bamboo
