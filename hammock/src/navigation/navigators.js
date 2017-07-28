@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react';
+import { StyleSheet, Image, View } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator, StackNavigator, TabRouter } from "react-navigation";
 
@@ -28,23 +29,53 @@ import EchoView from '../containers/EchoView'
 //   Profile: { screen: ProfileScreen },
 // });
 
+const styles = StyleSheet.create({
+  icon: {
+    width: 26,
+    height: 26,
+  },
+});
 
-
+//nested tabs home
 const HomeContainer = TabNavigator(
   {
     home: { screen: Home },
     popular: { screen: Popular }
   },
   {
+    initialRouteName: 'home',
     lazy: true,
     tabBarPosition: 'top',
     swipeEnabled: false,
     lazyLoad: true,
     animationEnabled: false,
+    tabBarOptions: {
+      activeTintColor: '#60F4F4',
+      inactiveTintColor: '#AAAAAA',
+      activeBackgroundColor : '#fff',
+      inactiveBackgroundColor : '#fff',
+      showLabel: true,
+      pressOpacity: 0.5,
+      labelStyle: {
+        fontSize: 10,
+      },
+      style: {
+        // backgroundColor: 'transparent'
+        backgroundColor: '#fff',
+        // marginLeft: 20,
+        // marginRight: 20,
+      },
+      indicatorStyle: {
+        backgroundColor: '#60F4F4',
+      },
+      tabStyle: {
+        // padding: 0,
+      }
+    }
   }
 );
 
-
+//nested tabs inbox
 const InboxContainer = TabNavigator(
   {
     notifications: { screen: Notifications },
@@ -56,6 +87,47 @@ const InboxContainer = TabNavigator(
   }
 );
 
+
+//设置各个tab导航图标，文字
+HomeContainer.navigationOptions = ({ navigation }) => ({
+    // title: `Chat with ${navigation.state.params.user}`,
+    title: 'Home',
+    tabBarLabel: 'Home',
+    tabBarIcon: ({ tintColor }) => (
+      /*<Image
+        source={require('../assets/img/f8-logo.png')}
+        style={[styles.icon, {tintColor: tintColor}]}
+      />*/ 
+      <Icon name="home" size={26} color= {tintColor} />
+    ),
+});
+
+Search.navigationOptions = {
+    title: 'Search',
+    tabBarLabel: 'Search',
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name="search" size={26} color= {tintColor} />
+    ),
+}
+
+InboxContainer.navigationOptions = {
+    title: 'Inbox',
+    tabBarLabel: 'Inbox',
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name="inbox" size={26} color= {tintColor} />
+    ),
+}
+
+PersonalInfo.navigationOptions = {
+    title: 'Me',
+    tabBarLabel: 'Me',
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name="user" size={26} color= {tintColor} />
+    ),
+}
+
+
+//主框架
 export const AppNavigator = TabNavigator(
   {
     tab_home: { screen: HomeContainer },
@@ -64,23 +136,44 @@ export const AppNavigator = TabNavigator(
     tab_personalinfo: { screen: PersonalInfo }
   },
   {
+    initialRouteName: 'tab_home',
+    order: ['tab_home','tab_search','tab_inbox','tab_personalinfo'],
     lazy: true,
     swipeEnabled: false,
-    lazyLoad: true,
     animationEnabled: false,
+    backBehavior: 'initialRoute',
+    paths: {
+      tab_home: 'tab_home',
+      tab_search: 'tab_search',
+      tab_inbox: 'tab_inbox',
+      tab_personalinfo: 'tab_personalinfo'    
+    },
     tabBarPosition: 'bottom',
     tabBarOptions: {
-      activeTintColor: '#3e9ce9',
-      inactiveTintColor: '#999999',
+      activeTintColor: '#FF5555',
+      inactiveTintColor: '#AAAAAA',
+      activeBackgroundColor : '#fff',
+      inactiveBackgroundColor : '#fff',
+      showLabel: true,
+      upperCaseLabel: false,
+      pressColor: '#EE9C66',
+      pressOpacity: 0.5,
       showIcon: true,
+      iconStyle: {
+      },
+      labelStyle: {
+        fontSize:12,
+      },
       style: {
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        borderTopWidth: 1,
+        borderTopColor: '#DDDDDD',
       },
       indicatorStyle: {
         opacity: 0
       },
       tabStyle: {
-        padding: 0
+        padding: 0,
       }
     }
   }
