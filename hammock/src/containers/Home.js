@@ -85,13 +85,15 @@ class Home extends React.Component {
                       <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
                   </View>
                 </View>
-                <View style={styles.infoBody}>
-                   <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                   <Image
-                     source={require('../assets/img/NavLogo.png')}
-                     style={styles.thumbnails}
-                   />
-                </View>
+                <TouchableOpacity onPress={() => { dispatch(NavigationActions.navigate({ routeName: 'posts_detail', params: {'postid': 1}, })) }}>
+                  <View style={styles.infoBody}>
+                    <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
+                    <Image
+                      source={require('../assets/img/NavLogo.png')}
+                      style={styles.thumbnails}
+                    />
+                  </View>
+                </TouchableOpacity>
                 <View style={styles.infoAction}>
                       <View style={styles.vote}>
                            <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
@@ -428,6 +430,8 @@ let styles = StyleSheet.create({
       <ScrollView style={styles.container}>
             <Text>Tab title:{this.props.title} name:{this.props.name}</Text>
             <Text>Tab data:{this.props.data}</Text>
+            <Button onPress={Actions.pop} title='Back' />
+            <Button onPress={() => { Actions.mainframe({ data: 'mainframe!' }); }} title='Switch to mainframe' /> 
             <Button onPress={Actions.pop} title='Back' />
             <Button onPress={() => { dispatch(NavigationActions.navigate({ routeName: 'tab_inbox' })) }} title='Switch to tab_inbox' /> 
             <Button onPress={() => { dispatch({ type: 'Login' }) }} title='dispatch Login' /> 

@@ -1,9 +1,9 @@
 'use strict'
 
 import React from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, Image, View, Button } from 'react-native';
 import { connect } from 'react-redux';
-import { addNavigationHelpers, TabNavigator, StackNavigator, TabRouter } from "react-navigation";
+import { addNavigationHelpers, TabNavigator, StackNavigator, DrawerNavigator, TabRouter } from "react-navigation";
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -17,6 +17,7 @@ import Messages from '../containers/Messages'
 import PersonalInfo from '../containers/PersonalInfo'
 import Error from '../containers/Error'
 import EchoView from '../containers/EchoView'
+import postsDetail from '../containers/postsDetail'
 
 
 // import LoginScreen from './components/LoginScreen';
@@ -33,6 +34,9 @@ const styles = StyleSheet.create({
   icon: {
     width: 26,
     height: 26,
+  },
+  headerRight: {
+    marginRight: 15,
   },
 });
 
@@ -127,8 +131,8 @@ PersonalInfo.navigationOptions = {
 }
 
 
-//主框架
-export const AppNavigator = TabNavigator(
+//底部导航
+const bottomNavigator =  TabNavigator(
   {
     tab_home: { screen: HomeContainer },
     tab_search: { screen: Search },
@@ -179,6 +183,77 @@ export const AppNavigator = TabNavigator(
   }
 );
 
+
+const pageNavigator = StackNavigator({
+    bottom_navigator: {
+      screen: bottomNavigator,
+    },
+    posts_detail: {
+      path: 'detail/:postid',
+      screen: postsDetail,
+    },
+  },
+  {
+    // navigationOptions: {
+    //   header: null,
+    // },
+    navigationOptions: ({ navigation }) => {
+      // const headerVisible = navigation.state.params && navigation.state.params.headerVisible;
+      // const headerVisible = navigation.state.params.headerVisible || true;
+      // console.log('navigation',navigation)
+      const headerVisible = navigation.state.routeName === 'posts_detail'; //posts_detail 时显示标题栏
+      return {
+        header: headerVisible ? undefined : null,
+        title: 'post detail',
+        headerRight: (<Icon name="ellipsis-h" size={22} color= '#AAAAAA' style={styles.headerRight} />),
+      };
+    }
+
+  }
+
+);
+
+//主框架
+export const AppNavigator = DrawerNavigator({
+    page_navigator: {
+      screen: pageNavigator,
+    },
+    drawer: {
+      screen: Drawer
+    }
+  },
+  {
+    initialRouteName: 'page_navigator',
+    contentOptions: {
+      activeTintColor: '#e91e63',
+    },
+    navigationOptions: {
+      drawerLabel: 'drawer',
+      drawerIcon: ({ tintColor }) => (
+        <Image
+          source={require('../assets/img/hamburger.png')}
+          style={[styles.icon, {tintColor: tintColor}]}
+        />
+      ),
+    }
+  }
+);
+
+
+
+
+
+
+// AppNavigator.navigationOptions = ({ navigation }) => {
+//   // const headerVisible = navigation.state.params && navigation.state.params.headerVisible;
+//   // const headerVisible = navigation.state.params.headerVisible || true;
+//   console.log('navigation',navigation)
+//   const headerVisible = navigation.state.routeName === 'posts_detail'; //posts_detail 时显示标题栏
+//   return {
+//     header: headerVisible ? undefined : null,
+//     title: 'Now you see me',
+//   };
+// };
 
 
 // const AppWithNavigationState = ({ dispatch, nav }) => (
