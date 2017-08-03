@@ -5,30 +5,20 @@ import{
     StyleSheet,
     View,
     Text,
-    Button
+    Button,
+    TouchableOpacity
   }from 'react-native'
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as homeActions from '../actions/homeActions'
 
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
 
-let styles = StyleSheet.create({
-  container: {
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    marginTop: 80,
-    padding: 10
-  },
-  summary: {
-    fontFamily: 'BodoniSvtyTwoITCTT-Book',
-    fontSize: 18,
-    fontWeight: 'bold'
-  }
-})
+import { personalInfoList } from '../assets/personalInfoList'
 
 
 class PersonalInfo extends React.Component {
@@ -37,28 +27,119 @@ class PersonalInfo extends React.Component {
     this.setTimeout(() => {},2500)
   }
   render () {
+    //Array [{reactElement},{reactElement},{reactElement}]
+    let personalInfoListElememt = personalInfoList.map(function(val, index) {
+      return (
+        <TouchableOpacity key={index}>
+          <View style={styles.infoRow}>
+              <Icon style={styles.infoRowIconLeft}  name={val.icon} size={20} color= '#AAAAAA' />
+              <Text style={styles.infoRowText}>{val.description}</Text>
+              <Icon style={styles.infoRowIconRight}  name="angle-right" size={20} color= '#AAAAAA' />
+          </View>
+        </TouchableOpacity>
+        )
+    })
+    // debugger
     return (
       <View style={styles.container}>
-            <Text>Tab title:{this.props.title} name:{this.props.name}</Text>
-            <Text>Tab data:{this.props.data}</Text>
-            <Button onPress={Actions.pop} title='Back' />
-            <Button onPress={() => { Actions.mainframe({ data: 'mainframe!' }); }} title='Switch to mainframe' /> 
-            <Button onPress={() => { Actions.tab_home({ data: 'tab_home!' }); }} title='Switch to tab_home' /> 
-            <Button onPress={() => { Actions.popular({ data: 'popular!' }); }} title='Switch to popular' /> 
-            <Button onPress={() => { Actions.home({ data: 'home!' }); }} title='Switch to home' /> 
-            <Button onPress={() => { Actions.tab_search({ data: 'tab_search!' }); }} title='Switch to tab_search with data' /> 
-            <Button onPress={() => { Actions.tab_inbox({ data: 'tab_inbox!' }); }} title='Switch to tab_inbox' /> 
-            <Button onPress={() => { Actions.notifications({ data: 'notifications!' }); }} title='Switch to notifications' /> 
-            <Button onPress={() => { Actions.messages({ data: 'messages!' }); }} title='Switch to messages' /> 
-            <Button onPress={() => { Actions.tab_personalinfo({ data: 'tab_personalinfo!' }); }} title='Switch to tab_personalinfo' /> 
-            <Button onPress={() => { Actions.error({ data: 'error!' }); }} title='Switch to error' /> 
-
+          <View style={styles.karmaAge}>
+            <View style={styles.karma}>
+              <Icon style={styles.karmaIcon}  name="pagelines" size={20} color= '#F93A60' />
+              <View style={styles.karmaTextView}>
+                <Text style={styles.karmaTextTop}>1</Text>
+                <Text style={styles.karmaTextBottom}>KARMA</Text>
+              </View>
+            </View>
+            <View style={styles.age}>
+              <Icon style={styles.ageIcon}  name="birthday-cake" size={20} color= '#6BFAA4' />
+              <View style={styles.ageTextView}>
+                <Text style={styles.ageTextTop}>134 d</Text>
+                <Text style={styles.ageTextBottom}>REDDIT AGE</Text>
+              </View>
+            </View>
+          </View>
+          {personalInfoListElememt}
       </View>
     )
   }
 }
 
-
+let styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    flex: 1,
+  },
+  karmaAge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingBottom: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEE',
+  },
+  karma: {
+    flex: 1,
+    borderRightWidth: 1,
+    borderRightColor: '#EEE',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  karmaIcon: {
+    marginLeft: 15,
+    marginRight: 20,
+  },
+  karmaTextView: {
+    flexDirection: 'column',
+  },
+  karmaTextTop: {
+    fontWeight: 'bold',
+  },
+  karmaTextBottom: {
+    fontSize: 11,
+    color: '#CCC'
+  },
+  age: {
+    flex: 1,
+    borderRightWidth: 1,
+    borderRightColor: '#EEE',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  ageIcon: {
+    marginLeft: 15,
+    marginRight: 20,
+  },
+  ageTextView: {
+    flexDirection: 'column',
+  },
+  ageTextTop: {
+    fontWeight: 'bold',
+  },
+  ageTextBottom: {
+    fontSize: 11,
+    color: '#CCC'
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEE',
+  },
+  infoRowIconLeft: {
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  infoRowIconRight: {
+    marginRight: 10,
+  },
+  infoRowText: {
+    flex: 1,
+  }, 
+})
 
 // 组件卸载时自动注销定时器，也可以在componentWillUnMount手动注销定时器
 reactMixin(PersonalInfo.prototype, TimerMixin)
