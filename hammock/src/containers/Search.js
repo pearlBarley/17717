@@ -5,53 +5,55 @@ import{
     StyleSheet,
     View,
     Text,
-    Button
+    Button,
+    Platform,
   }from 'react-native'
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as homeActions from '../actions/homeActions'
-
+import { SearchBar }  from '../components/SearchBar.js';
+import { SubscriptionsList }  from '../components/SubscriptionsList.js';
+import SubscriptionsListDemo  from '../components/SubscriptionsListDemo.js';
+// let SearchBar_ios = require('react-native-search-bar');
 
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
 
 let styles = StyleSheet.create({
   container: {
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    marginTop: 80,
-    padding: 10
+    // display: 'flex',
+    // flexDirection: 'row',
+    // alignItems: 'stretch',
+    backgroundColor: '#fff',
   },
-  summary: {
-    fontFamily: 'BodoniSvtyTwoITCTT-Book',
-    fontSize: 18,
-    fontWeight: 'bold'
-  }
 })
 
 
 class Search extends React.Component {
-
+  
+  constructor(props) {
+        super(props)
+        this.state = {
+        };
+  }
   componentDidMount () {
     this.setTimeout(() => {},2500)
   }
+
+  doSearch(val) {
+    alert(val)
+  }
+
   render () {
+    // if(Platform.OS == 'ios'){
+    let search__Bar = <SearchBar onSearch={(val)=> {this.doSearch(val)}}/>;
+
     return (
       <View style={styles.container}>
-            <Text>Tab title:{this.props.title} name:{this.props.name}</Text>
-            <Text>Tab data:{this.props.data}</Text>
-            <Button onPress={Actions.pop} title='Back' />
-            <Button onPress={() => { Actions.mainframe({ data: 'mainframe!' }); }} title='Switch to mainframe' /> 
-            <Button onPress={() => { Actions.tab_home({ data: 'tab_home!' }); }} title='Switch to tab_home' /> 
-            <Button onPress={() => { Actions.popular({ data: 'popular!' }); }} title='Switch to popular' /> 
-            <Button onPress={() => { Actions.home({ data: 'home!' }); }} title='Switch to home' /> 
-            <Button onPress={() => { Actions.tab_search({ data: 'tab_search!' }); }} title='Switch to tab_search with data' /> 
-            <Button onPress={() => { Actions.tab_inbox({ data: 'tab_inbox!' }); }} title='Switch to tab_inbox' /> 
-            <Button onPress={() => { Actions.notifications({ data: 'notifications!' }); }} title='Switch to notifications' /> 
-            <Button onPress={() => { Actions.messages({ data: 'messages!' }); }} title='Switch to messages' /> 
-            <Button onPress={() => { Actions.tab_personalinfo({ data: 'tab_personalinfo!' }); }} title='Switch to tab_personalinfo' /> 
-            <Button onPress={() => { Actions.error({ data: 'error!' }); }} title='Switch to error' /> 
+         {search__Bar}
+         <SubscriptionsList />
+         {/*<SubscriptionsListDemo />*/}
       </View>
     )
   }

@@ -140,7 +140,7 @@ const bottomNavigator =  TabNavigator(
     tab_personalinfo: { screen: PersonalInfo }
   },
   {
-    initialRouteName: 'tab_home',
+    initialRouteName: 'tab_search',
     order: ['tab_home','tab_search','tab_inbox','tab_personalinfo'],
     lazy: true,
     swipeEnabled: false,
