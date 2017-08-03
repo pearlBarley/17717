@@ -5,7 +5,8 @@ import{
     StyleSheet,
     View,
     Text,
-    Button
+    Button,
+    Image,
   }from 'react-native'
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
@@ -16,19 +17,7 @@ import * as homeActions from '../actions/homeActions'
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
 
-let styles = StyleSheet.create({
-  container: {
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    marginTop: 80,
-    padding: 10
-  },
-  summary: {
-    fontFamily: 'BodoniSvtyTwoITCTT-Book',
-    fontSize: 18,
-    fontWeight: 'bold'
-  }
-})
+
 
 
 class Messages extends React.Component {
@@ -39,26 +28,51 @@ class Messages extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-            <Text>Tab title:{this.props.title} name:{this.props.name}</Text>
-            <Text>Tab data:{this.props.data}</Text>
-            <Button onPress={Actions.pop} title='Back' />
-            <Button onPress={() => { Actions.mainframe({ data: 'mainframe!' }); }} title='Switch to mainframe' /> 
-            <Button onPress={() => { Actions.tab_home({ data: 'tab_home!' }); }} title='Switch to tab_home' /> 
-            <Button onPress={() => { Actions.popular({ data: 'popular!' }); }} title='Switch to popular' /> 
-            <Button onPress={() => { Actions.home({ data: 'home!' }); }} title='Switch to home' /> 
-            <Button onPress={() => { Actions.tab_search({ data: 'tab_search!' }); }} title='Switch to tab_search with data' /> 
-            <Button onPress={() => { Actions.tab_inbox({ data: 'tab_inbox!' }); }} title='Switch to tab_inbox' /> 
-            <Button onPress={() => { Actions.notifications({ data: 'notifications!' }); }} title='Switch to notifications' /> 
-            <Button onPress={() => { Actions.messages({ data: 'messages!' }); }} title='Switch to messages' /> 
-            <Button onPress={() => { Actions.tab_personalinfo({ data: 'tab_personalinfo!' }); }} title='Switch to tab_personalinfo' /> 
-            <Button onPress={() => { Actions.error({ data: 'error!' }); }} title='Switch to error' /> 
-
-      </View>
+          <View style={styles.content}>
+              <Text style={styles.contentTitle}>reddit • 134d</Text>
+              <Text style={styles.contentText}>hello, /u/wheatlala!Welcome to reddit! Hello!</Text>
+          </View>
+          <View style={styles.empty}>
+              <Image style={styles.emptyImage} source={require('../assets/img/NavLogo.png')} />
+              <Text style={styles.emptyText}>Wow, such empty</Text>
+          </View>
+     </View>
     )
   }
 }
 
-
+let styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#F7F6F6',
+    flex:1,
+  },
+  content: {
+    height: 50,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingBottom: 5,
+    borderBottomWidth:1,
+    borderBottomColor: '#EEE',
+  },
+  contentTitle: {},
+  contentText: {},
+  empty: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex:1,
+  },
+  emptyImage: {
+    width: 50,
+    height: 50,
+  },
+  emptyText: {
+    marginTop: 10
+  },
+})
 
 // 组件卸载时自动注销定时器，也可以在componentWillUnMount手动注销定时器
 reactMixin(Messages.prototype, TimerMixin)

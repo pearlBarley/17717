@@ -5,7 +5,9 @@ import{
     StyleSheet,
     View,
     Text,
-    Button
+    Button,
+    Picker,
+    Image
   }from 'react-native'
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
@@ -16,49 +18,73 @@ import * as homeActions from '../actions/homeActions'
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
 
-let styles = StyleSheet.create({
-  container: {
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    marginTop: 80,
-    padding: 10
-  },
-  summary: {
-    fontFamily: 'BodoniSvtyTwoITCTT-Book',
-    fontSize: 18,
-    fontWeight: 'bold'
-  }
-})
 
 
 class Notifications extends React.Component {
-
+  
+  constructor(props) {
+    super(props)
+    this.state = {
+      sort: "All Notifications",
+    }
+  }
   componentDidMount () {
     this.setTimeout(() => {},2500)
   }
   render () {
     return (
       <View style={styles.container}>
-            <Text>Tab title:{this.props.title} name:{this.props.name}</Text>
-            <Text>Tab data:{this.props.data}</Text>
-            <Button onPress={Actions.pop} title='Back' />
-            <Button onPress={() => { Actions.mainframe({ data: 'mainframe!' }); }} title='Switch to mainframe' /> 
-            <Button onPress={() => { Actions.tab_home({ data: 'tab_home!' }); }} title='Switch to tab_home' /> 
-            <Button onPress={() => { Actions.popular({ data: 'popular!' }); }} title='Switch to popular' /> 
-            <Button onPress={() => { Actions.home({ data: 'home!' }); }} title='Switch to home' /> 
-            <Button onPress={() => { Actions.tab_search({ data: 'tab_search!' }); }} title='Switch to tab_search with data' /> 
-            <Button onPress={() => { Actions.tab_inbox({ data: 'tab_inbox!' }); }} title='Switch to tab_inbox' /> 
-            <Button onPress={() => { Actions.notifications({ data: 'notifications!' }); }} title='Switch to notifications' /> 
-            <Button onPress={() => { Actions.messages({ data: 'messages!' }); }} title='Switch to messages' /> 
-            <Button onPress={() => { Actions.tab_personalinfo({ data: 'tab_personalinfo!' }); }} title='Switch to tab_personalinfo' /> 
-            <Button onPress={() => { Actions.error({ data: 'error!' }); }} title='Switch to error' /> 
-
+          <View style={styles.multipleChoice}>
+            <Picker
+              selectedValue={this.state.sort}
+              onValueChange={(sort) => this.setState({sort: sort})}
+              style={styles.pickerSort}>
+              <Picker.Item label="All Notifications" value="All Notifications" />
+              <Picker.Item label="Comment Replies" value="Comment Replies" />
+              <Picker.Item label="Post Replies" value="Post Replies" />
+              <Picker.Item label="Username Mentions" value="Username Mentions" />
+            </Picker>
+          </View>
+          <View style={styles.content}>
+          </View>
+          <View style={styles.empty}>
+               <Image style={styles.emptyImage} source={require('../assets/img/NavLogo.png')} />
+               <Text style={styles.emptyText}>Wow, such empty</Text>
+          </View>
       </View>
     )
   }
 }
 
-
+let styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#F7F6F6',
+    flex:1,
+  },
+  multipleChoice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 10,
+  },
+  pickerSort: {
+    flexBasis: 160,
+    height: 30,
+  },
+  content: {},
+  empty: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex:1,
+  },
+  emptyImage: {
+    width: 50,
+    height: 50,
+  },
+  emptyText: {
+    marginTop: 10
+  },
+})
 
 // 组件卸载时自动注销定时器，也可以在componentWillUnMount手动注销定时器
 reactMixin(Notifications.prototype, TimerMixin)
