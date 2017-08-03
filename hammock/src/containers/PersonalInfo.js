@@ -8,6 +8,7 @@ import{
     Button,
     TouchableOpacity
   }from 'react-native'
+import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -27,10 +28,22 @@ class PersonalInfo extends React.Component {
     this.setTimeout(() => {},2500)
   }
   render () {
+
+    const { navigate, dispatch } = this.props.navigation;
+
     //Array [{reactElement},{reactElement},{reactElement}]
     let personalInfoListElememt = personalInfoList.map(function(val, index) {
       return (
-        <TouchableOpacity key={index}>
+        <TouchableOpacity 
+          key={index} 
+          onPress={()=>{dispatch(NavigationActions.navigate(
+                                      {
+                                        routeName: 'personnal_info_stack',
+                                        params: {'stackname': val.description}
+                                      })
+                       )}
+                  }>
+          
           <View style={styles.infoRow}>
               <Icon style={styles.infoRowIconLeft}  name={val.icon} size={20} color= '#AAAAAA' />
               <Text style={styles.infoRowText}>{val.description}</Text>

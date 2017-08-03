@@ -19,7 +19,7 @@ import PersonalInfo from '../containers/PersonalInfo'
 import Error from '../containers/Error'
 import EchoView from '../containers/EchoView'
 import postsDetail from '../containers/postsDetail'
-
+import PersonnalInfoStack from '../containers/PersonnalInfoStack'
 
 // import LoginScreen from './components/LoginScreen';
 // import MainScreen from './components/MainScreen';
@@ -214,7 +214,7 @@ const bottomNavigator =  TabNavigator(
     tab_personalinfo: { screen: PersonalInfoContainer }
   },
   {
-    initialRouteName: 'tab_personalinfo',
+    initialRouteName: 'tab_search',
     order: ['tab_home','tab_search','tab_inbox','tab_personalinfo'],
     lazy: true,
     swipeEnabled: false,
@@ -269,6 +269,21 @@ const pageNavigator = StackNavigator({
       path: 'detail/:postid',
       screen: postsDetail,
     },
+    personnal_info_stack: {
+      path: 'personnalinfo/:stackname',
+      screen: PersonnalInfoStack,
+    //   navigationOptions: ({ navigation }) => ({ 
+    //    title: `${navigation.state.params.stackname}`,
+    //    headerStyle: {
+    //      height: 40,
+    //    },
+    //    headerTitleStyle: {
+    //      alignSelf: 'center',
+    //      fontSize: 16,
+    //    },
+    //    headerTintColor: '#000',
+    //  })
+    },
   },
   {
     // navigationOptions: {
@@ -278,12 +293,36 @@ const pageNavigator = StackNavigator({
       // const headerVisible = navigation.state.params && navigation.state.params.headerVisible;
       // const headerVisible = navigation.state.params.headerVisible || true;
       // console.log('navigation',navigation)
-      const headerVisible = navigation.state.routeName === 'posts_detail'; //posts_detail 时显示标题栏
+      // const headerVisible = navigation.state.routeName === 'posts_detail'; //posts_detail 时显示标题栏     
+      let headerVisible = false
+      let title = ''
+      let headerRight = []
+      let headerTitleStyle = {fontSize: 16,}
+      debugger
+      switch (navigation.state.routeName) {
+        case 'posts_detail':
+                headerVisible = true
+                title = 'post detail'
+                headerRight = (<Icon name="ellipsis-h" size={22} color= '#AAAAAA' style={styles.headerRight} />)
+             break
+        case 'personnal_info_stack':
+                headerVisible = true
+                title = `${navigation.state.params.stackname}`
+                headerTitleStyle.alignSelf = 'center'
+             break
+        default:
+
+      }
       return {
         header: headerVisible ? undefined : null,
-        title: 'post detail',
-        headerRight: (<Icon name="ellipsis-h" size={22} color= '#AAAAAA' style={styles.headerRight} />),
+        title: title,
+        headerRight: headerRight,
+        headerStyle: {
+          height: 40,
+        },
+        headerTintColor: '#000',
       };
+
     }
 
   }
