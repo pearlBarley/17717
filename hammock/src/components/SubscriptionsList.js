@@ -27,9 +27,14 @@ export class SubscriptionsList extends Component {
             alphabets: [],
         }
         let alphabetsArr = []
-        for ([key, value] of subscriptions[1].data.entries()) {
-            alphabetsArr.push(value.alphabet)
+        let subscriptionData = subscriptions[1]['data'];
+        for (let i=0;i<subscriptionData.length;i++) {
+            alphabetsArr.push(subscriptionData[i].alphabet)
         }
+        //RN 不支持 chrome支持
+        // for ( [key, value] of subscriptions[1]['data'].entries()) {
+        //     alphabetsArr.push(value.alphabet)
+        // }
         // this.setState({ alphabets: alphabetsArr })
         this.state = {
             sectionData: subscriptions,
