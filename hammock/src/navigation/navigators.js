@@ -298,7 +298,6 @@ const pageNavigator = StackNavigator({
       let title = ''
       let headerRight = []
       let headerTitleStyle = {fontSize: 16,}
-      debugger
       switch (navigation.state.routeName) {
         case 'posts_detail':
                 headerVisible = true
