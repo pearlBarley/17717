@@ -22,7 +22,8 @@ module.exports = Routes;
 function Routes (app) {
   var config = app.get('config');
   var client = app.get('redisClient');
-  
+
+
   /*
    * Homepage
    */

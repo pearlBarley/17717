@@ -135,8 +135,10 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 // require('./routes')(app);
 
 // 引入路由方法二
-var router = require('./router');
+var router = require('./routes/router');
+var apiRouter = require('./routes/apiRouter');
 app.use('/', router);
+app.use('/api', apiRouter);
 
 // 引入路由方法三
 // app.get('/', homeController.index);

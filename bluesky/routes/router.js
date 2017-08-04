@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-const homeController = require('./controllers/home');
-const userController = require('./controllers/user');
-const apiController = require('./controllers/api');
-const contactController = require('./controllers/contact');
+const homeController = require('../controllers/home');
+const userController = require('../controllers/user');
+const apiController = require('../controllers/api');
+const contactController = require('../controllers/contact');
 
 /**
  * Primary app routes.
@@ -15,7 +15,7 @@ router.get('/room/:roomID', homeController.enterRoom);
 /**
  * API examples routes.
  */
-router.get('/api', apiController.getApi);
+// router.get('/api', apiController.getApi);
 
 
 // router.post('/deleteApkInfo', loginRequired, apkinfo.deleteApkInfo);
@@ -34,5 +34,6 @@ router.get('/api', apiController.getApi);
 //         res.send({statuscode: 'loginRequired', detail: 'user does not loged in'});
 //     }
 // }
+
 
 module.exports = router;
