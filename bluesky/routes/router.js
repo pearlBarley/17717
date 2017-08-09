@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 const homeController = require('../controllers/home');
-const userController = require('../controllers/user');
+// const userController = require('../controllers/user');
 const apiController = require('../controllers/api');
-const contactController = require('../controllers/contact');
+// const contactController = require('../controllers/contact');
 
 /**
  * Primary app routes.
