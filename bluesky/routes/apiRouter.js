@@ -12,7 +12,6 @@ const apiController = require('../controllers/api');
 //   res.send('Hello World!');
 // });
 
-router.get('/login', apiController.login);
 router.post('/login', apiController.login);
 router.post('/signup', apiController.signup);
 

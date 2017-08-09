@@ -6,6 +6,9 @@ const accountSchema = new mongoose.Schema({
   username: { type: String, unique: true },
   email: { type: String, unique: true },
   password: String,
+  
+  tokens: Array,
+  tokenExpires: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
 
@@ -16,7 +19,6 @@ const accountSchema = new mongoose.Schema({
   instagram: String,
   linkedin: String,
   steam: String,
-  tokens: Array,
 
   friend_ids: [Schema.Types.ObjectId],
   blackUser_ids: [Schema.Types.ObjectId],
