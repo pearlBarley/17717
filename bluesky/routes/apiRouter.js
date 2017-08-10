@@ -3,6 +3,8 @@ var router = express.Router();
 
 const apiController = require('../controllers/api');
 
+const authMW = require('../middlewares/auth.js');
+
 // router.get('/aaa', function(req, res) {
 //   res.json({a:1});
 
@@ -11,9 +13,10 @@ const apiController = require('../controllers/api');
 // router.get('/bbb', function (req, res) {
 //   res.send('Hello World!');
 // });
-
+router.get('/test', authMW.loginAuth)
 router.post('/login', apiController.login);
-router.post('/signup', apiController.signup);
+router.post('/logout', apiController.logout);
+router.post('/signup',authMW.loginAuth, apiController.signup);
 
 
 module.exports = router;

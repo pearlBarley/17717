@@ -3,18 +3,20 @@
 const Account = require('../models/Account');
 let bcrypt = require('bcrypt-nodejs');
 let crypto = require('crypto');
+let jwt = require('jsonwebtoken');
+let redisModule = require('../utils/redis');
 
-let createRandomToken = (callback) => {
-      crypto.randomBytes(32,  (err, salt) => {
-        if (err) { throw err;}
-        salt = new Buffer(salt).toString('hex');
-        crypto.pbkdf2('123456', salt, 3000, 32, function (err,hash) {
-            if (err) { throw err; }
-            hash = new Buffer(hash).toString('hex');
-            callback(hash);
-        })
-      })
-}
+// let createRandomToken = (callback) => {
+//       crypto.randomBytes(32,  (err, salt) => {
+//         if (err) { throw err;}
+//         salt = new Buffer(salt).toString('hex');
+//         crypto.pbkdf2('123456', salt, 3000, 32, function (err,hash) {
+//             if (err) { throw err; }
+//             hash = new Buffer(hash).toString('hex');
+//             callback(hash);
+//         })
+//       })
+// }
 //hmac-sha1加密
 // let createRandomToken = (content, callback) => {
 //     //var content = 'password';//加密的明文；
@@ -41,25 +43,59 @@ exports.login = (req, res) => {
     }else{
       bcrypt.compare(req.body.password,data[0].password,function(err,bool){
         if(bool){
-           //生成token
-           createRandomToken((token)=>{
-               data[0].tokens.push(token)
-               let tokens = data[0].tokens
-               //console.log(new Date().toLocaleString()) getTime()
-               let tokenExpires = Date.now() + 3600000; // 1 hour
-               Account.update({ username: req.body.username },{tokens, tokenExpires}, (err, numberAffected, rawResponse) => {
-                   if (err) { res.json({success: false, msg: err}) }
-                   res.json({success: true, msg: "登陆成功", token: token})
-               });
-           })
+            //生成token
+            //  createRandomToken((token)=>{
+            //      data[0].tokens.push(token)
+            //      let tokens = data[0].tokens
+            //      //console.log(new Date().toLocaleString()) getTime()
+            //      let tokenExpires = Date.now() + 3600000; // 1 hour
+            //      Account.update({ username: req.body.username },{tokens, tokenExpires}, (err, numberAffected, rawResponse) => {
+            //          if (err) { res.json({success: false, msg: err}) }
+            //          res.json({success: true, msg: "登陆成功", token: token})
+            //      });
+            //  })
+
+            // 创建token
+            //var token = jwt.sign({data: 'foobar'}, 'secret', { expiresIn: 60 * 60 });
+            var username = data[0].username,
+                email = data[0].email
+            // var token = jwt.sign({ username, email }, 'shhhhh', { expiresIn: 60 * 60 }); //用户在有效时间内logout前端销毁token后，token还是有效的，所以有效期判断放在redis上
+            var token = jwt.sign({ username, email }, 'shhhhh');
+            redisModule.client.set('token', token);
+            redisModule.client.expire('token', 60 * 60);
+            // setTimeout(()=>{
+            //      redisModule.client.get('token',redisModule.redis.print);
+            // },5000)
+
+            // 返回token
+            res.json({
+                success: true,
+                message: '登陆成功',
+                token: token
+            });
            
         }else{
-           res.json({success: false, msg: "登录失败"})
+            res.json({success: false, msg: "登录失败"})
         }
       });
     }
   })
 }
+
+//logout
+exports.logout = (req, res) => {
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    if (token) {
+        //redisModule.client.set('token', { is_expired: true });
+        redisModule.client.expire('token', 0);  //设置token为过期
+        res.json({success: true, msg: "登出成功"})
+    } else {
+        // 如果没有token，则返回错误
+       res.json({success: false, msg: "找不到token"})
+  }
+}
+
 
 //register
 exports.signup = (req, res) => {
