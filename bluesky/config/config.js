@@ -9,7 +9,7 @@ var config = {
   debug: true,
 
   // mongodb 配置
-  db: 'mongodb://127.0.0.1/test',
+  // db: 'mongodb://127.0.0.1/test',
 
   // redis 配置，默认是本地
   redis_host: '127.0.0.1',
@@ -18,12 +18,12 @@ var config = {
   redis_password: '',
 
   // 程序运行的端口
-  port: 3000,
+  // port: 3000,
 
   // 文件上传配置
   upload: {
-    path: path.join(__dirname, 'uploads/'),
-    url: '/uploads/'
+    path: path.join(__dirname, 'public/uploads/'),
+    url: '/public/uploads/'
   },
 
 };

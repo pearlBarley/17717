@@ -11,6 +11,7 @@ import{
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { NavigationActions } from 'react-navigation';
 import * as homeActions from '../actions/homeActions'
 import { SearchBar }  from '../components/SearchBar.js';
 import { SubscriptionsList }  from '../components/SubscriptionsList.js';
@@ -38,9 +39,12 @@ class Search extends React.Component {
         };
   }
   componentDidMount () {
-    this.setTimeout(() => {},2500)
+    this.checkLogin()
   }
-
+  checkLogin () {
+    const { dispatch } = this.props.navigation;
+    dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+  }
   doSearch(val) {
     alert(val)
   }

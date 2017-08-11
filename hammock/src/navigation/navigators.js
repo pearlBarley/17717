@@ -20,6 +20,9 @@ import Error from '../containers/Error'
 import EchoView from '../containers/EchoView'
 import postsDetail from '../containers/postsDetail'
 import PersonnalInfoStack from '../containers/PersonnalInfoStack'
+import SignPage from '../containers/SignPage'
+import SignupPage from '../containers/SignupPage'
+import LoginPage from '../containers/LoginPage'
 
 // import LoginScreen from './components/LoginScreen';
 // import MainScreen from './components/MainScreen';
@@ -284,6 +287,16 @@ const pageNavigator = StackNavigator({
     //    headerTintColor: '#000',
     //  })
     },
+    sign_page: {
+      screen: SignPage,
+    },
+    signup_page: {
+      screen: SignupPage,
+    },
+    login_page: {
+      screen: LoginPage,
+    },
+
   },
   {
     // navigationOptions: {

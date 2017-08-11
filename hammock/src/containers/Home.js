@@ -32,8 +32,13 @@ class Home extends React.Component {
       layout: "Card",
     }
   }
+  checkLogin () {
+    const { dispatch } = this.props.navigation;
+    dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+  }
   componentDidMount () {
-    this.setTimeout(() => {},2500)
+    // this.setTimeout(() => {},2500)
+    // this.checkLogin()
   }
   startConversation () {
     alert(1111)
@@ -285,6 +290,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 let styles = StyleSheet.create({
   container: {
+    // flex:1,
     backgroundColor: '#F7F6F6',
   },
   multipleChoice: {
