@@ -6,7 +6,7 @@
 ![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo.gif)  
 
 
-![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo2.gif)
+![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo3.gif)
 
 ### HOW TO START
 
