@@ -114,9 +114,7 @@ class SignupPage extends React.Component {
                   maxLength={20}
                   placeholder="Email"
                   style={styles.textInput}
-                  onBlur={() =>{}}
-                  onChangeText={() =>{}}
-                  onEndEditing={() =>{}}
+
                   onChangeText={(email) => this.setState({email})}
                   value={this.state.email}
                 />
@@ -125,9 +123,7 @@ class SignupPage extends React.Component {
                   maxLength={20}
                   placeholder="Username"
                   style={styles.textInput}
-                  onBlur={() =>{}}
-                  onChangeText={() =>{}}
-                  onEndEditing={() =>{}}
+    
                   onChangeText={(name) => this.setState({name})}
                   value={this.state.name}
                 />
@@ -137,9 +133,7 @@ class SignupPage extends React.Component {
                   maxLength={20}
                   placeholder="Password"
                   style={styles.textInput}
-                  onBlur={() =>{}}
-                  onChangeText={() =>{}}
-                  onEndEditing={() =>{}}
+      
                   onChangeText={(password) => this.setState({password})}
                   value={this.state.password}
                 />

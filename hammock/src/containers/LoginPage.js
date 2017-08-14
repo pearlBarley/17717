@@ -107,15 +107,15 @@ class LoginPage extends React.Component {
                     />
                 </View>
                 <Text style={styles.text}>Log in to Reddit</Text>
+                  {/*onBlur={() =>{}}
+                  onChangeText={() =>{}}
+                  onEndEditing={() =>{}}*/}
                 <TextInput
                   autoFocus={true} 
                   defaultValue=""
                   maxLength={20}
                   placeholder="Username"
-                  style={styles.textInput}
-                  onBlur={() =>{}}
-                  onChangeText={() =>{}}
-                  onEndEditing={() =>{}}
+                  style={styles.textInput}            
                   onChangeText={(name) => this.setState({name})}
                   value={this.state.name}
                 />
@@ -125,9 +125,6 @@ class LoginPage extends React.Component {
                   maxLength={20}
                   placeholder="Password"
                   style={styles.textInput}
-                  onBlur={() =>{}}
-                  onChangeText={() =>{}}
-                  onEndEditing={() =>{}}
                   onChangeText={(password) => this.setState({password})}
                   value={this.state.password}
                 />
