@@ -4,6 +4,7 @@
 ### DEMO
 
 ![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo.gif)
+![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo2.gif)
 
 ### HOW TO START
 

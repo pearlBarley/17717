@@ -99,7 +99,7 @@ class SignPage extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-         <Icon name="close" size={20} color= '#AAAAAA' />
+         <Icon name="close" onPress={() => this.props.navigation.goBack()} size={20} color= '#AAAAAA' />
          <View style={styles.contentFrame}>
             <View style={styles.bannerFrame}>
                 <Image
