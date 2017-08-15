@@ -1,6 +1,8 @@
 
 'use strict'
 
+import { NavigationActions } from 'react-navigation';
+import { AppNavigator } from '../navigation/navigators';
 import { SIGNUP } from '../reducers/mutation-types'
 import config from '../config/config'
 //export var changeEmail = (email) => {
@@ -27,6 +29,7 @@ export function changePassword (password) {
 export function createAccount (email, username, password) {
   return (dispatch) => {
     let params = { email, username, password }
+    console.log('params',params)
     //fetch('http://192.168.1.126:8999/api/test').then((res)=>{console.log(res)})
     fetch(`${config.host}:${config.port}/api/signup`, {
       method: 'post',
@@ -38,16 +41,17 @@ export function createAccount (email, username, password) {
       },
       body: JSON.stringify(params)
     })
-    .then(res=>res.json())
-    .then(res => {
-          console.log(res)
-          // if(res.success){
-          //   dispatch(signupSuccess(res)
-          // } else {
-
-          // }
-          dispatch(signupResult(res.success))
-    });
+    .then((res)=>res.json()) 
+    .then((data) => {
+          dispatch(signupResult(data.success)) 
+          if (data.success) {
+            dispatch(NavigationActions.navigate({ routeName: 'login_page', params: {}}))
+          }
+    })
+    .catch((err) => {  
+       console.warn(err);  
+    })
+    .done();
   }
 }
 
