@@ -14,7 +14,7 @@ import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as homeActions from '../actions/homeActions'
+import * as signupActions from '../actions/signupActions'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import TimerMixin from 'react-timer-mixin'
@@ -81,19 +81,29 @@ class SignupPage extends React.Component {
 
   constructor (props) {
     super(props)
-    this.state = {
-      email: '',
-      name: '',
-      password: '',
-    }
+    // this.state = {
+    //   email: '',
+    //   name: '',
+    //   password: '',
+    // }
   }
   componentDidMount () {
   }
   createAccount () {
-
+    let { stateData: { email, name, password }, 
+          navigation: { navigate, dispatch }, 
+          actions:{ createAccount } 
+        } = this.props;
+    //createAccount(...stateData)
+    createAccount(email, name, password)
   }
   render () {
-    const { navigate, dispatch } = this.props.navigation;
+    let { stateData, 
+          navigation: { navigate, dispatch }, 
+          actions: { changeEmail, changeName, changePassword } 
+        } = this.props;
+    // console.log('this.props',this.props)
+
     return (
       <View style={styles.container}>
             {/*<TouchableHighlight >*/}
@@ -115,17 +125,19 @@ class SignupPage extends React.Component {
                   placeholder="Email"
                   style={styles.textInput}
 
-                  onChangeText={(email) => this.setState({email})}
-                  value={this.state.email}
+                  onChangeText={(email) => changeEmail(email)}
+                  value={stateData.email}
                 />
+                  {/*onChangeText={(email) => this.setState({email})}
+                  value={this.state.email}*/}
                 <TextInput
                   defaultValue=""
                   maxLength={20}
                   placeholder="Username"
                   style={styles.textInput}
     
-                  onChangeText={(name) => this.setState({name})}
-                  value={this.state.name}
+                  onChangeText={(name) => changeName(name)}
+                  value={stateData.name}
                 />
                 <TextInput
                   secureTextEntry={true}
@@ -134,8 +146,8 @@ class SignupPage extends React.Component {
                   placeholder="Password"
                   style={styles.textInput}
       
-                  onChangeText={(password) => this.setState({password})}
-                  value={this.state.password}
+                  onChangeText={(password) => changePassword(password)}
+                  value={stateData.password}
                 />
                 <Text style={styles.declaration}>By signing up, you agree to our Terms and that you have read our Privacy Policy and Content Policy</Text>                
                 <TouchableHighlight style={styles.touch} onPress={this.createAccount.bind(this)} activeOpacity={0.8} >
@@ -157,23 +169,19 @@ reactMixin(SignupPage.prototype, TimerMixin)
 
 function mapStateToProps (state) {
   return {
-    deviceVersion: state.device,
-    auth: {
-      form: {
-        isFetching: state.auth
-      }
-    },
-    global: {
-      currentState: state.global,
-      showState: state.global
+    stateData: {
+      email: state.signup.email,
+      name: state.signup.name,
+      password: state.signup.password,
     }
+
   }
 }
 
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators({ ...homeActions }, dispatch)
+    actions: bindActionCreators({ ...signupActions }, dispatch)
   }
 }
 

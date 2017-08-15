@@ -17,6 +17,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as homeActions from '../actions/homeActions'
 import Icon from 'react-native-vector-icons/FontAwesome'
+// import Dimensions from 'Dimensions'
+// var {height, width} = Dimensions.get('window') // Screen dimensions in current orientation
 
 
 import TimerMixin from 'react-timer-mixin'

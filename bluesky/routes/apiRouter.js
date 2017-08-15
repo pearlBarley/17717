@@ -16,7 +16,7 @@ const authMW = require('../middlewares/auth.js');
 router.get('/test', authMW.loginAuth)
 router.post('/login', apiController.login);
 router.post('/logout', apiController.logout);
-router.post('/signup',authMW.loginAuth, apiController.signup);
+router.post('/signup', apiController.signup);
 
 
 module.exports = router;
