@@ -107,7 +107,7 @@ export class SubscriptionsList extends Component {
     }
     render() {
 
-        // console.log('this.state.alphabets',this.state.alphabets)    
+        console.log('this.state.alphabets',this.state.alphabets)    
         return (            
             <View style={styles.container} >
                 <SectionList

@@ -22,6 +22,8 @@ export  default class AlphabetList extends PureComponent {
 
 
     render() {
+        // var a = this.state.isShow
+        // console.log('isshow',a)
         return (
             <View
                 pointerEvents='box-none'
@@ -74,8 +76,18 @@ export  default class AlphabetList extends PureComponent {
     componentWillUnmount() {
         this.measureTimer && clearTimeout(this.measureTimer);
     }
-
+    //初始渲染组件之后（初始render之后）,通知组件已经加载完成
     componentDidMount() {
+        this.updateSectionItemHeight()
+    }
+    componentWillUpdate() {
+        //console.log("准备更新组件 componentWillUpdate")
+    }
+    //调用了 render() 更新完成界面之后
+    componentDidUpdate() {
+        this.updateSectionItemHeight()
+    }
+    updateSectionItemHeight () {
         //它们的高度都是一样的，所以这边只需要测量一个就好了
         const sectionItem = this.refs.sectionItem0;
         this.measureTimer = setTimeout(() => {
@@ -87,7 +99,6 @@ export  default class AlphabetList extends PureComponent {
             })
         }, 0);
     }
-
     detectAndScrollToSection = (e) => {
         var ev = e.nativeEvent.touches[0];
         // 手指按下的时候需要修改颜色
@@ -169,8 +180,8 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        marginTop: 50,
-        marginBottom: 50,
+        marginTop: 10,
+        marginBottom: 10,
         width: 15,
     },
 

@@ -23,6 +23,7 @@ let reactMixin = require('react-mixin')
 
 let styles = StyleSheet.create({
   container: {
+    flex: 1,
     // display: 'flex',
     // flexDirection: 'row',
     // alignItems: 'stretch',
@@ -39,7 +40,8 @@ class Search extends React.Component {
         };
   }
   componentDidMount () {
-    this.checkLogin()
+    // this.checkLogin()  //直接请求alphabetList 字母弹出层渲染失败
+    setTimeout(()=>this.checkLogin(),0)    //字母不一致
   }
   checkLogin () {
     const { dispatch } = this.props.navigation;
