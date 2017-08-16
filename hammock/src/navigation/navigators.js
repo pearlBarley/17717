@@ -22,7 +22,7 @@ import postsDetail from '../containers/postsDetail'
 import PersonnalInfoStack from '../containers/PersonnalInfoStack'
 import SignPage from '../containers/SignPage'
 import SignupPage from '../containers/SignupPage'
-import LoginPage from '../containers/LoginPage'
+import SigninPage from '../containers/SigninPage'
 
 // import LoginScreen from './components/LoginScreen';
 // import MainScreen from './components/MainScreen';
@@ -293,8 +293,8 @@ const pageNavigator = StackNavigator({
     signup_page: {
       screen: SignupPage,
     },
-    login_page: {
-      screen: LoginPage,
+    signin_page: {
+      screen: SigninPage,
     },
 
   },

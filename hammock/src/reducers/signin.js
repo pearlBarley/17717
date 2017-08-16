@@ -11,12 +11,23 @@ const initialState = {
   operation: {
       type: '',    // get / add / update / delete
       name: '',    // 中文名称
-      result: true,   // 操作成功或失败
+      result: false,   // 操作成功或失败
       msg: ''      // 错误信息
   }
 }
 
 const actionHandler = {
+  [SIGNIN.SIGNIN_RESULT]: (state, action) => {
+    return {
+        // cateList: action.data,
+        operation: {
+            type: 'post',
+            name: '登录',
+            result: action.success,
+            msg: ''
+        }
+    }   
+  },
   [SIGNIN.LOGIN]: (state, action) => {
     return {
         // cateList: action.data,

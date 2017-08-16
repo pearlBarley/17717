@@ -6,12 +6,12 @@ import { SIGNUP } from './mutation-types'
 const initialState = {
   loaded: false,
   email: '',
-  name: '',
+  username: '',
   password: '',
   operation: {
       type: '',    // get / add / update / delete
       name: '',    // 中文名称
-      result: true,   // 操作成功或失败
+      result: false,   // 操作成功或失败
       msg: ''      // 错误信息
   }
 }

@@ -7,6 +7,7 @@ export const SIGNUP = {
   SIGNUP_RESULT: 'SIGNUP_RESULT',
 }
 export const SIGNIN = {
+  SIGNIN_RESULT: 'SIGNIN_RESULT',
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
 }

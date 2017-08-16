@@ -27,7 +27,7 @@ export function changePassword (password) {
 
 //注册账户
 export function createAccount (email, username, password) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     let params = { email, username, password }
     console.log('params',params)
     //fetch('http://192.168.1.126:8999/api/test').then((res)=>{console.log(res)})

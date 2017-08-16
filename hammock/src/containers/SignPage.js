@@ -94,7 +94,7 @@ class SignPage extends React.Component {
   }
   jumpToLogin () {
     const { dispatch } = this.props.navigation;
-    dispatch(NavigationActions.navigate({ routeName: 'login_page', params: {}}))
+    dispatch(NavigationActions.navigate({ routeName: 'signin_page', params: {}}))
   }
   render () {
     return (
@@ -138,16 +138,6 @@ reactMixin(SignPage.prototype, TimerMixin)
 
 function mapStateToProps (state) {
   return {
-    deviceVersion: state.device,
-    auth: {
-      form: {
-        isFetching: state.auth
-      }
-    },
-    global: {
-      currentState: state.global,
-      showState: state.global
-    }
   }
 }
 

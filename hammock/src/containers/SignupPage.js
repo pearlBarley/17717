@@ -90,12 +90,12 @@ class SignupPage extends React.Component {
   componentDidMount () {
   }
   createAccount () {
-    let { stateData: { email, name, password }, 
+    let { stateData: { email, username, password }, 
           navigation: { navigate, dispatch }, 
           actions:{ createAccount } 
         } = this.props;
     //createAccount(...stateData)
-    createAccount(email, name, password)
+    createAccount(email, username, password)
   }
   render () {
     let { stateData, 
@@ -137,7 +137,7 @@ class SignupPage extends React.Component {
                   style={styles.textInput}
     
                   onChangeText={(name) => changeName(name)}
-                  value={stateData.name}
+                  value={stateData.username}
                 />
                 <TextInput
                   secureTextEntry={true}
@@ -171,8 +171,9 @@ function mapStateToProps (state) {
   return {
     stateData: {
       email: state.signup.email,
-      name: state.signup.name,
+      username: state.signup.username,
       password: state.signup.password,
+      operation: state.signup.operation,
     }
 
   }
