@@ -41,7 +41,7 @@ export function createAccount (email, username, password) {
       },
       body: JSON.stringify(params)
     })
-    .then((res)=>res.json()) 
+    // .then((res)=>res.json()) 
     .then((data) => {
           dispatch(signupResult(data.success)) 
           if (data.success) {

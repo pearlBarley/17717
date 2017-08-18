@@ -26,13 +26,20 @@ export function login (username, password) {
           },
           body: JSON.stringify(params)
         })
-        .then(res=>res.json()) 
+        // .then(res=>res.json()) 
         .then((data) => {
               console.log('data',data)
               dispatch(signinResult(data.success)) 
               if (data.success) {
                 MyStorage.save('login-token',{token: data.token})
                 resolve()
+                // const resetAction = NavigationActions.reset({
+                //   index: 1,
+                //   actions: [
+                //     NavigationActions.navigate({ routeName: 'Search'}),
+                //   ]
+                // })
+                // dispatch(resetAction)
                 //dispatch(NavigationActions.navigate({ routeName: 'login_page', params: {}}))
                 
               }
