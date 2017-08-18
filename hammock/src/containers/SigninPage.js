@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
 
+import { MyStorage } from '../storage/storage' 
 
 
 class SigninPage extends React.Component {
@@ -45,6 +46,10 @@ class SigninPage extends React.Component {
       if (this.props.stateData.operation.result) {
         this.props.navigation.goBack()
       }
+      MyStorage.load('login-token',(val)=>{
+        console.log('login-token',val)
+      })
+
     })
 
     

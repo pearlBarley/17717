@@ -5,6 +5,7 @@ import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigation/navigators';
 import { SIGNIN } from '../reducers/mutation-types'
 import config from '../config/config'
+import { MyStorage } from '../storage/storage'
 
 //注册账户
 export function login (username, password) {
@@ -12,8 +13,9 @@ export function login (username, password) {
     return new Promise((resolve, reject) => {
         // const { username } = getState();
         let params = { username, password }
-        // console.log('params',params)
+        console.log('params',params)
         //fetch('http://192.168.1.126:8999/api/test').then((res)=>{console.log(res)})
+        debugger
         fetch(`${config.host}:${config.port}/api/login`, {
           method: 'post',
           headers: {
@@ -24,11 +26,12 @@ export function login (username, password) {
           },
           body: JSON.stringify(params)
         })
-        .then((res)=>res.json()) 
+        .then(res=>res.json()) 
         .then((data) => {
-              // console.log(data)
+              console.log('data',data)
               dispatch(signinResult(data.success)) 
               if (data.success) {
+                MyStorage.save('login-token',{token: data.token})
                 resolve()
                 //dispatch(NavigationActions.navigate({ routeName: 'login_page', params: {}}))
                 
