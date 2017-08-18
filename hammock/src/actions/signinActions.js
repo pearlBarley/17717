@@ -15,7 +15,6 @@ export function login (username, password) {
         let params = { username, password }
         console.log('params',params)
         //fetch('http://192.168.1.126:8999/api/test').then((res)=>{console.log(res)})
-        debugger
         fetch(`${config.host}:${config.port}/api/login`, {
           method: 'post',
           headers: {

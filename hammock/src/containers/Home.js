@@ -36,7 +36,7 @@ class Home extends React.Component {
   }
   checkLogin () {
     const { dispatch } = this.props.navigation;
-    dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+    //dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
   }
   componentDidMount () {
     // this.setTimeout(() => {},2500)

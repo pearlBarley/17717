@@ -69,6 +69,28 @@ function getURLParameter (urlParams) {
 }
 
 
+//是否是初始加载
+// MyStorage.save('ifIsInit',true)
+
+// storage.remove({key:'login-token'})
+
+//初始检测有无login-token，检测是否是初始加载
+MyStorage.load('login-token',(token)=>{
+    console.log('login-token',token)
+    MyStorage.save('ifIsInit',false)
+  },() => {
+    console.log('not found token, please login')
+    //dispatch(NavigationActions.navigate({ routeName: 'login_page', params: {}}))
+    MyStorage.save('ifIsInit',true)
+    //NavigationActions.navigate({ routeName: 'sign_page', params: {}})
+  },() => {
+    console.log('token expire')
+    MyStorage.save('ifIsInit',true)
+    //NavigationActions.navigate({ routeName: 'sign_page', params: {}})
+  })
+
+
+
 class index extends React.Component {
 
   store = configureStore(reducers)

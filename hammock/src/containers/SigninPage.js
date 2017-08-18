@@ -44,7 +44,23 @@ class SigninPage extends React.Component {
     .then(()=>{
       //console.log('stateData.operation',this.props.stateData.operation)
       if (this.props.stateData.operation.result) {
-        this.props.navigation.goBack()
+        //登陆成功，初始加载的话页面重新定位到Search tar ，不是初始加载直接返回上一级路由   
+        MyStorage.load('ifIsInit',(ifIsInit)=>{
+          if(ifIsInit){
+            // const resetAction = NavigationActions.reset({
+            //   index: 0,
+            //   actions: [
+            //     NavigationActions.navigate({ routeName: 'signup_page'}),
+            //   ]
+            // })
+            // this.props.navigation.dispatch(resetAction)
+            this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'tab_search', params: {}}))
+            //登录后取消初始加载检测
+            MyStorage.save('ifIsInit',false)
+          } else {
+            this.props.navigation.goBack()
+          }
+        })
       }
       MyStorage.load('login-token',(val)=>{
         console.log('login-token',val)

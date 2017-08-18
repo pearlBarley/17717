@@ -17,6 +17,7 @@ import { SearchBar }  from '../components/SearchBar.js';
 import { SubscriptionsList }  from '../components/SubscriptionsList.js';
 import SubscriptionsListDemo  from '../components/SubscriptionsListDemo.js';
 // let SearchBar_ios = require('react-native-search-bar');
+import storage, { MyStorage } from '../storage/storage';
 
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
@@ -45,7 +46,23 @@ class Search extends React.Component {
   }
   checkLogin () {
     const { dispatch } = this.props.navigation;
-    dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+    //dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+    MyStorage.load('ifIsInit',(ifIsInit)=>{
+      console.log('ifIsInit',ifIsInit)
+      if(ifIsInit){
+         dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+      }
+    })
+    // MyStorage.load('login-token',(token)=>{
+    //   console.log('login-token',token)
+    // },() => {
+    //   console.log('not found token, please login')
+    //   //dispatch(NavigationActions.navigate({ routeName: 'login_page', params: {}}))
+    //   dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+    // },() => {
+    //   console.log('token expire')
+    //   dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+    // })
   }
   doSearch(val) {
     alert(val)
