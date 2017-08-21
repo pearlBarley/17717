@@ -31,6 +31,7 @@ class SigninPage extends React.Component {
       name: '',
       password: '',
     }
+    this.login = this.login.bind(this)
   }
   componentDidMount () {
   }
@@ -94,6 +95,7 @@ class SigninPage extends React.Component {
                   defaultValue=""
                   maxLength={20}
                   placeholder="Username"
+                  underlineColorAndroid= "transparent"     
                   style={styles.textInput}            
                   onChangeText={(name) => this.setState({name})}
                   value={this.state.name}
@@ -102,13 +104,14 @@ class SigninPage extends React.Component {
                   secureTextEntry={true}
                   defaultValue=""
                   maxLength={20}
+                  underlineColorAndroid= "transparent"     
                   placeholder="Password"
                   style={styles.textInput}
                   onChangeText={(password) => this.setState({password})}
                   value={this.state.password}
                 />
                 <Text style={styles.declaration}>FORGOT PASSWORD</Text>                
-                <TouchableHighlight style={styles.touch} onPress={this.login.bind(this)} activeOpacity={0.8} >
+                <TouchableHighlight style={styles.touch} onPress={this.login} activeOpacity={0.8} >
                     <View style={styles.btnView}>
                         <Text style={styles.btnCreateText}>LOG IN</Text>
                     </View>

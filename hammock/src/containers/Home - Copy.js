@@ -10,9 +10,6 @@ import{
     Picker,
     TouchableOpacity,
     Image,
-    Modal,
-    TouchableHighlight,
-    Dimensions,
   }from 'react-native'
 import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
@@ -27,10 +24,6 @@ import storage, { MyStorage } from '../storage/storage';
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
 
-var {
-  height: deviceHeight,
-  width: deviceWidth,
-} = Dimensions.get("window");
 
 class Home extends React.Component {
 
@@ -39,7 +32,6 @@ class Home extends React.Component {
     this.state = {
       sort: "Hot",
       layout: "Card",
-      modalVisible: false,
     }
   }
   checkLogin () {
@@ -55,68 +47,13 @@ class Home extends React.Component {
     // this.setTimeout(() => {},2500)
     setTimeout(()=>this.checkLogin(),0)
   }
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-  postText(){
-    const { navigate, dispatch } = this.props.navigation;
-    this.setModalVisible(false)
-    dispatch(NavigationActions.navigate({ routeName: 'create_post', params: {'title': 'Text'}, }))
-  }
-  postImgOrVideo(){
-    const { navigate, dispatch } = this.props.navigation;
-    this.setModalVisible(false)
-    dispatch(NavigationActions.navigate({ routeName: 'create_post', params: {'title': 'Image/Video'}, }))
-  }
-  postLink(){
-    const { navigate, dispatch } = this.props.navigation;
-    this.setModalVisible(false)
-    dispatch(NavigationActions.navigate({ routeName: 'create_post', params: {'title': 'Link'}, }))
-  }
   startConversation () {
-     this.setModalVisible(true)
+    alert(1111)
   }
   render () {
     const { navigate, dispatch } = this.props.navigation;
     return (
       <ScrollView style={styles.container}>
-          <Modal
-          animationType={"fade"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {this.setModalVisible(false)}}
-          >
-         <View style={styles.modalView}>
-          <View style={styles.triangleUp}></View>
-          <View style={styles.conversation}>
-            <Text style={styles.conversationText}>Start a conversation</Text>
-            <View style={styles.conversationView}>
-                <TouchableOpacity onPress={() => this.postText()}>
-                  <View style={styles.conversationViewSection}>
-                      <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
-                      <Text style={styles.conversationViewSectionText}>TEXT</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.postImgOrVideo()}>
-                  <View style={styles.conversationViewSection}>
-                      <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
-                      <Text style={styles.conversationViewSectionText}>IMAGE/VIDEO</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.postLink()}>
-                  <View style={styles.conversationViewSection}>
-                      <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
-                      <Text style={styles.conversationViewSectionText}>LINK</Text>
-                  </View>
-                </TouchableOpacity>
-            </View>
- 
-
-          </View>
-         </View>
-        </Modal>
-
-
         <View style={styles.multipleChoice}>
             <Picker
               selectedValue={this.state.sort}
@@ -186,6 +123,131 @@ class Home extends React.Component {
                 </View>
             </View>
 
+            {/***********测试布局******/}
+            <View style={styles.info}>         
+                <View style={styles.infoTitle}>
+                  <Text style={styles.infoTitleText}>r/news • 2h</Text>
+                  <View style={styles.infoTitleIcon}>
+                      <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
+                  </View>
+                </View>
+                <View style={styles.infoBody}>
+                   <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
+                   <Image
+                     source={require('../assets/img/NavLogo.png')}
+                     style={styles.thumbnails}
+                   />
+                </View>
+                <View style={styles.infoAction}>
+                      <View style={styles.vote}>
+                           <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
+                           <Text style={styles.voteText} >16.0k</Text>
+                           <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
+                      </View>
+                      <View style={styles.comment}>
+                           <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
+                           <Text style={styles.commentText} >2.4k</Text>
+                      </View>
+                      <View style={styles.share}>
+                           <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
+                           <Text style={styles.shareText} >Share</Text>
+                      </View>                           
+                </View>
+            </View>
+
+            <View style={styles.info}>         
+                <View style={styles.infoTitle}>
+                  <Text style={styles.infoTitleText}>r/news • 2h</Text>
+                  <View style={styles.infoTitleIcon}>
+                      <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
+                  </View>
+                </View>
+                <View style={styles.infoBody}>
+                   <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
+                   <Image
+                     source={require('../assets/img/NavLogo.png')}
+                     style={styles.thumbnails}
+                   />
+                </View>
+                <View style={styles.infoAction}>
+                      <View style={styles.vote}>
+                           <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
+                           <Text style={styles.voteText} >16.0k</Text>
+                           <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
+                      </View>
+                      <View style={styles.comment}>
+                           <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
+                           <Text style={styles.commentText} >2.4k</Text>
+                      </View>
+                      <View style={styles.share}>
+                           <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
+                           <Text style={styles.shareText} >Share</Text>
+                      </View>                           
+                </View>
+            </View>
+
+            <View style={styles.info}>         
+                <View style={styles.infoTitle}>
+                  <Text style={styles.infoTitleText}>r/news • 2h</Text>
+                  <View style={styles.infoTitleIcon}>
+                      <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
+                  </View>
+                </View>
+                <View style={styles.infoBody}>
+                   <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
+                   <Image
+                     source={require('../assets/img/NavLogo.png')}
+                     style={styles.thumbnails}
+                   />
+                </View>
+                <View style={styles.infoAction}>
+                      <View style={styles.vote}>
+                           <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
+                           <Text style={styles.voteText} >16.0k</Text>
+                           <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
+                      </View>
+                      <View style={styles.comment}>
+                           <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
+                           <Text style={styles.commentText} >2.4k</Text>
+                      </View>
+                      <View style={styles.share}>
+                           <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
+                           <Text style={styles.shareText} >Share</Text>
+                      </View>                           
+                </View>
+            </View>
+
+            <View style={styles.info}>         
+                <View style={styles.infoTitle}>
+                  <Text style={styles.infoTitleText}>r/news • 2h</Text>
+                  <View style={styles.infoTitleIcon}>
+                      <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
+                  </View>
+                </View>
+                <View style={styles.infoBody}>
+                   <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
+                   <Image
+                     source={require('../assets/img/NavLogo.png')}
+                     style={styles.thumbnails}
+                   />
+                </View>
+                <View style={styles.infoAction}>
+                      <View style={styles.vote}>
+                           <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
+                           <Text style={styles.voteText} >16.0k</Text>
+                           <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
+                      </View>
+                      <View style={styles.comment}>
+                           <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
+                           <Text style={styles.commentText} >2.4k</Text>
+                      </View>
+                      <View style={styles.share}>
+                           <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
+                           <Text style={styles.shareText} >Share</Text>
+                      </View>                           
+                </View>
+            </View>
+            {/***********测试布局******/}
         </View>
 
       </ScrollView>
@@ -363,62 +425,7 @@ let styles = StyleSheet.create({
   shareText: {
     paddingLeft: 10,
   }, 
-
-  modalView: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  conversation: {
-    width: deviceWidth*0.9,
-    // marginTop: 120,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    // position: 'relative',
-  },
-  triangleUp: {
-    // position: 'absolute',
-    // top: -10,
-    // left: 8,
-    width: 0,
-    height: 0,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: '#fff',
-    borderLeftWidth: 8,
-    borderRightWidth: 8,
-    borderBottomWidth: 8,
-    marginTop: 110,
-    marginLeft: 28,
-    alignSelf: 'flex-start',
-  },
-  conversationText: {
-    fontSize: 15,
-    marginBottom: 10,
-  },
-  conversationView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  conversationViewSection: {
-    marginRight: 20,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  conversationViewSectionImage: {
-    width: 50,
-    height: 50,
-    marginBottom: 10,
-  },
-  conversationViewSectionText: {
-    fontSize: 12,
-  },
-       
+           
 })
 
 

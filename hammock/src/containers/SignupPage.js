@@ -122,6 +122,7 @@ class SignupPage extends React.Component {
                   autoFocus={true} 
                   defaultValue=""
                   maxLength={20}
+                  underlineColorAndroid= "transparent"     
                   placeholder="Email"
                   style={styles.textInput}
 
@@ -133,6 +134,7 @@ class SignupPage extends React.Component {
                 <TextInput
                   defaultValue=""
                   maxLength={20}
+                  underlineColorAndroid= "transparent"     
                   placeholder="Username"
                   style={styles.textInput}
     
@@ -143,6 +145,7 @@ class SignupPage extends React.Component {
                   secureTextEntry={true}
                   defaultValue=""
                   maxLength={20}
+                  underlineColorAndroid= "transparent"     
                   placeholder="Password"
                   style={styles.textInput}
       

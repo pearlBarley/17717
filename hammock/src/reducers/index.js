@@ -5,13 +5,14 @@ import { combineReducers } from 'redux';
 import nav from  './nav'
 import signup from './signup'
 import signin from './signin'
+import posts from './posts'
 
 
 const AppReducer = combineReducers({
   nav,
   signup,
   signin,
-  
+  posts,
 });
 
 export default AppReducer;

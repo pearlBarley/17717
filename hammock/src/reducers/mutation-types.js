@@ -11,6 +11,8 @@ export const SIGNIN = {
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
 }
-
+export const POST = {
+  CREATE_RESULT: 'CREATE_RESULT',
+}
 
 export default { SIGNUP, SIGNIN }

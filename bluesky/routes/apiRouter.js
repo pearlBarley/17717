@@ -14,9 +14,10 @@ const authMW = require('../middlewares/auth.js');
 //   res.send('Hello World!');
 // });
 router.get('/test', authMW.loginAuth)
-router.post('/login', apiController.login);
-router.post('/logout', apiController.logout);
-router.post('/signup', apiController.signup);
+router.post('/login', apiController.account.login);
+router.post('/logout', apiController.account.logout);
+router.post('/signup', apiController.account.signup);
+router.post('/createPost', apiController.post.createPost);
 
 
 module.exports = router;

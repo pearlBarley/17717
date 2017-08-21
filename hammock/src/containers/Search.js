@@ -42,17 +42,17 @@ class Search extends React.Component {
   }
   componentDidMount () {
     // this.checkLogin()  //直接请求alphabetList 字母弹出层渲染失败
-    setTimeout(()=>this.checkLogin(),0)    //字母不一致
+    // setTimeout(()=>this.checkLogin(),0)    //字母不一致
   }
   checkLogin () {
     const { dispatch } = this.props.navigation;
     //dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
-    MyStorage.load('ifIsInit',(ifIsInit)=>{
-      console.log('ifIsInit',ifIsInit)
-      if(ifIsInit){
-         dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
-      }
-    })
+    // MyStorage.load('ifIsInit',(ifIsInit)=>{
+    //   console.log('ifIsInit',ifIsInit)
+    //   if(ifIsInit){
+    //      dispatch(NavigationActions.navigate({ routeName: 'sign_page', params: {}}))
+    //   }
+    // })
     // MyStorage.load('login-token',(token)=>{
     //   console.log('login-token',token)
     // },() => {

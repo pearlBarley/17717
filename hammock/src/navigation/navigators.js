@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react';
-import { StyleSheet, Image, View, Button } from 'react-native';
+import { StyleSheet, Image, View, Button, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator, StackNavigator, DrawerNavigator, TabRouter } from "react-navigation";
 
@@ -23,6 +23,7 @@ import PersonnalInfoStack from '../containers/PersonnalInfoStack'
 import SignPage from '../containers/SignPage'
 import SignupPage from '../containers/SignupPage'
 import SigninPage from '../containers/SigninPage'
+import postCreate from '../containers/postCreate'
 
 // import LoginScreen from './components/LoginScreen';
 // import MainScreen from './components/MainScreen';
@@ -217,7 +218,7 @@ const bottomNavigator =  TabNavigator(
     tab_personalinfo: { screen: PersonalInfoContainer }
   },
   {
-    initialRouteName: 'tab_search',
+    initialRouteName: 'tab_home',
     order: ['tab_home','tab_search','tab_inbox','tab_personalinfo'],
     lazy: true,
     swipeEnabled: false,
@@ -268,6 +269,10 @@ const pageNavigator = StackNavigator({
     bottom_navigator: {
       screen: bottomNavigator,
     },
+    create_post: {
+      path: 'createPost/:title',
+      screen: postCreate,
+    },
     posts_detail: {
       path: 'detail/:postid',
       screen: postsDetail,
@@ -310,6 +315,7 @@ const pageNavigator = StackNavigator({
       let headerVisible = false
       let title = ''
       let headerRight = []
+      let headerLeft = []
       let headerTitleStyle = {fontSize: 16,}
       switch (navigation.state.routeName) {
         case 'posts_detail':
@@ -322,6 +328,13 @@ const pageNavigator = StackNavigator({
                 title = `${navigation.state.params.stackname}`
                 headerTitleStyle.alignSelf = 'center'
              break
+        case 'create_post':
+                headerVisible = true
+                title = `${navigation.state.params.title}`
+                headerTitleStyle.alignSelf = 'center'
+                headerRight = (<Text onPress={navigation.state.params.createPost} style={{color: '#5685CC',marginRight:15}}>POST</Text>)
+                headerLeft = (<Icon name="ellipsis-h" size={22} color= '#AAAAAA' style={styles.headerRight} />)
+             break
         default:
 
       }
@@ -329,9 +342,11 @@ const pageNavigator = StackNavigator({
         header: headerVisible ? undefined : null,
         title: title,
         headerRight: headerRight,
+        // headerLeft: headerLeft,
         headerStyle: {
           height: 40,
         },
+        headerTitleStyle: headerTitleStyle,
         headerTintColor: '#000',
       };
 

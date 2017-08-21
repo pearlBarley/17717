@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const mongoose = { Schema } = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-  title: String,
+  title: { type: String, default: '' },
   content: String,
   upvote: Number,
   oppose: Number,
