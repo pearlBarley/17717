@@ -18,6 +18,7 @@ router.post('/login', apiController.account.login);
 router.post('/logout', apiController.account.logout);
 router.post('/signup', apiController.account.signup);
 router.post('/createPost', apiController.post.createPost);
+router.get('/getHomePosts', apiController.post.getHomePosts);
 
 
 module.exports = router;

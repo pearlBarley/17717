@@ -1,5 +1,8 @@
 'use strict'
 
+export const HOME = {
+  GETHOMRPOSTS_RESULT: 'GETHOMRPOSTS_RESULT',
+}
 export const SIGNUP = {
   CHANGE_EMAIL: 'CHANGE_EMAIL',
   CHANGE_NAME: 'CHANGE_NAME',
@@ -15,4 +18,4 @@ export const POST = {
   CREATE_RESULT: 'CREATE_RESULT',
 }
 
-export default { SIGNUP, SIGNIN }
+export default { HOME, SIGNUP, SIGNIN, POST}

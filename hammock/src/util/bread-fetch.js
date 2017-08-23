@@ -1,5 +1,6 @@
 
 var oldFetch = global.fetch
+
 var newFetch = function (url, options={}) {
   this.request = {
       url,
@@ -9,37 +10,68 @@ var newFetch = function (url, options={}) {
   //     return val
   // })
 
-  //执行请求前的拦截操作
-  if (this.interceptors.length > 0) this.runInterceptors(0)
-
   return new Promise((resolve, reject) => {
-    //添加超时检测
-    var timeout = options.timeout
-    var timer
-    if (timeout) {
-        timer = setTimeout(function(){
-                        reject(new Error("fetch timeout"))
-                    }, timeout );
-    }
-    oldFetch(this.request.url, this.request.options)
-    .then(res=>res.json())
-    .then(res => {
-        //执行请求后的拦截操作
-        this.response = res
-        if (this.interceptors_after.length > 0) {
-            this.runInterceptorsAfter(0)
-            .then(data => {
-              // clearTimeout(timer)
-              resolve(data);
+
+    if (this.interceptors.length > 0) {
+        //执行请求前的拦截操作
+        this.runInterceptors(0)
+        .then(req => {
+            oldFetchFun(this,req)
+            .then((res)=>{
+                resolve(res);
             })
-        }
-    })
-    .catch(err => {
-        // clearTimerout(timer)
-        reject(err)
-        //throw err
-    });
+            .catch(err => {
+                reject(err)
+            });
+        })
+    } else {
+        oldFetchFun(this,this.request)
+        .then((res)=>{
+            resolve(res);
+        })
+        .catch(err => {
+            reject(err)
+        });
+    }
+
   });
+}
+
+var oldFetchFun = function (that, request) {
+    return new Promise((resolve, reject) => {
+        //添加超时检测
+        var timeout = request.options.timeout
+        var timer
+        if (timeout) {
+            timer = setTimeout(function(){
+                            reject(new Error("fetch timeout"))
+                        }, timeout );
+        }
+        console.log('oldFetch request',request)
+        oldFetch(request.url, request.options)
+        .then(res=>{
+            console.log('oldFetch res',res);
+            return res.json();
+        })
+        .then(res => {
+            console.log('oldFetch res json',res)
+            //执行请求后的拦截操作
+            that.response = res
+            if (that.interceptors_after.length > 0) {
+                that.runInterceptorsAfter(0)
+                .then(res => {
+                    // clearTimeout(timer)
+                    resolve(res);
+                })
+            }
+        })
+        .catch(err => {
+            console.log('err',err)
+            // clearTimerout(timer)
+            reject(err)
+            //throw err
+        });
+    })
 }
 
 var breadFetch = function () {
@@ -59,13 +91,25 @@ breadFetch.prototype.interceptors_after = []
 breadFetch.prototype.runInterceptors = function (i) {
   var _that = this
   if(i===0) this.interceptors_after = []
-  if (i >= this.interceptors.length) return
-  this.interceptors[i](this.request, function (callback) {
-      if(callback){
-        //callback 存入请求后执行的数组
-        _that.interceptors_after.push(callback)
-      }
-      _that.runInterceptors(++i)
+//   if (i >= this.interceptors.length) return
+//   this.interceptors[i](this.request, function (callback) {
+//       if(callback){
+//         //callback 存入请求后执行的数组
+//         _that.interceptors_after.push(callback)
+//       }
+//       _that.runInterceptors(++i)
+//   })
+  return new Promise((resolve, reject) => {
+    if (i >= this.interceptors.length) resolve(this.request)
+    this.interceptors[i](this.request, function (callback) {
+        if(callback){
+            //callback 存入请求后执行的数组
+            _that.interceptors_after.push(callback)
+        }
+        _that.runInterceptors(++i).then(req => {
+            resolve(req)
+        })   
+    })
   })
 }
 

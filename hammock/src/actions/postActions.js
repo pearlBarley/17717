@@ -23,7 +23,8 @@ export function createPost (title, content) {
             'Content-Type': 'application/json'
             //'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: JSON.stringify(params)
+          body: JSON.stringify(params),
+          // credentials: "same-origin"
         })
         // .then(res=>res.json()) 
         .then((data) => {

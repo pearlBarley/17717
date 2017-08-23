@@ -58,9 +58,10 @@ exports.login = (req, res) => {
             // 创建token
             //var token = jwt.sign({data: 'foobar'}, 'secret', { expiresIn: 60 * 60 });
             var username = data[0].username,
-                email = data[0].email
+                email = data[0].email,
+                _id = data[0]._id
             // var token = jwt.sign({ username, email }, 'shhhhh', { expiresIn: 60 * 60 }); //用户在有效时间内logout前端销毁token后，token还是有效的，所以有效期判断放在redis上
-            var token = jwt.sign({ username, email }, 'shhhhh');
+            var token = jwt.sign({ username, email, _id }, 'shhhhh');
             redisModule.client.set('token', token);
             redisModule.client.expire('token', 60 * 60);
             // setTimeout(()=>{

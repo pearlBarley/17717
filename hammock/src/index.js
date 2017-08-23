@@ -22,12 +22,18 @@ breadFetch.interceptors.push((req, next) => {
       next()
       return
   }
-  MyStorage.load('login-token',(token)=>{
-      console.log('login-token',token)
-      if (req.url.includes('?')) {
-        req.url = req.url + '&token=' + token
-      } else {
-        req.url = req.url + '?token=' + token
+  MyStorage.load('login-token',(tokenObj)=>{
+      // console.log('login-token',tokenObj)
+      if (! req.options.method || req.options.method.toUpperCase() === 'GET'){
+          if (req.url.includes('?')) {
+            req.url = req.url + '&token=' + tokenObj.token
+          } else {
+            req.url = req.url + '?token=' + tokenObj.token
+          }
+      } else if (req.options.method.toUpperCase() === 'POST') {
+          let body = JSON.parse(req.options.body)
+          body.token = tokenObj.token
+          req.options.body = JSON.stringify(body)
       }
       next()
     },() => {

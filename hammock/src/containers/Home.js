@@ -13,6 +13,9 @@ import{
     Modal,
     TouchableHighlight,
     Dimensions,
+    TouchableWithoutFeedback,
+
+    findNodeHandle,
   }from 'react-native'
 import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
@@ -52,7 +55,12 @@ class Home extends React.Component {
     })
   }
   componentDidMount () {
-    // this.setTimeout(() => {},2500)
+    const { actions: { getHomePosts } } = this.props
+    let pageSize = 10
+    let currentPage = 1
+    let params = { pageSize, currentPage }
+    getHomePosts(params)
+
     setTimeout(()=>this.checkLogin(),0)
   }
   setModalVisible(visible) {
@@ -76,44 +84,101 @@ class Home extends React.Component {
   startConversation () {
      this.setModalVisible(true)
   }
+  checkBoundary (even) {
+    let target = even.nativeEvent.target;
+    let a = findNodeHandle(this.refs.modalView);
+    if (target === findNodeHandle(this.refs.modalView) ) {  
+        this.setModalVisible(false)
+    } 
+  }
   render () {
-    const { navigate, dispatch } = this.props.navigation;
+    let { 
+      stateData: { homePostList }, 
+      navigation: { navigate, dispatch }
+    } = this.props;
+    
+    let postList = homePostList.map((post, index)=>{
+       return (
+            <View style={styles.info} key={index} >         
+                <View style={styles.infoTitle}>
+                  <Text style={styles.infoTitleText}>r/news • 2h</Text>
+                  <View style={styles.infoTitleIcon}>
+                      <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => { dispatch(NavigationActions.navigate({ routeName: 'posts_detail', params: {'postid': 1}, })) }}>
+                  <View style={styles.infoBody}>
+                    <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
+                      {post.title}/{post.content}
+                    </Text>                   
+                    <Image
+                      source={require('../assets/img/NavLogo.png')}
+                      style={styles.thumbnails}
+                    />     
+                  </View>
+                </TouchableOpacity>
+                <View style={styles.infoAction}>
+                      <View style={styles.vote}>
+                           <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
+                           <Text style={styles.voteText} >16.0k</Text>
+                           <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
+                      </View>
+                      <View style={styles.comment}>
+                           <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
+                           <Text style={styles.commentText} >2.4k</Text>
+                      </View>
+                      <View style={styles.share}>
+                           <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
+                           <Text style={styles.shareText} >Share</Text>
+                      </View>                           
+                </View>
+            </View>
+       );
+    })
+
+
+
     return (
       <ScrollView style={styles.container}>
-          <Modal
-          animationType={"fade"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {this.setModalVisible(false)}}
-          >
-         <View style={styles.modalView}>
-          <View style={styles.triangleUp}></View>
-          <View style={styles.conversation}>
-            <Text style={styles.conversationText}>Start a conversation</Text>
-            <View style={styles.conversationView}>
-                <TouchableOpacity onPress={() => this.postText()}>
-                  <View style={styles.conversationViewSection}>
-                      <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
-                      <Text style={styles.conversationViewSectionText}>TEXT</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.postImgOrVideo()}>
-                  <View style={styles.conversationViewSection}>
-                      <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
-                      <Text style={styles.conversationViewSectionText}>IMAGE/VIDEO</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.postLink()}>
-                  <View style={styles.conversationViewSection}>
-                      <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
-                      <Text style={styles.conversationViewSectionText}>LINK</Text>
-                  </View>
-                </TouchableOpacity>
-            </View>
- 
+        <Modal
+        animationType={"fade"}
+        transparent={true}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {this.setModalVisible(false)}}
+        >
+        {/*<View>*/}
+            <TouchableWithoutFeedback style={styles.touchModalView} onPress={(e) => this.checkBoundary(e)}>
+            <View ref="modalView" style={styles.modalView}>
 
-          </View>
-         </View>
+              <View style={styles.triangleUp}></View>
+              <View style={styles.conversation}>
+                <Text style={styles.conversationText}>Start a conversation</Text>
+                <View style={styles.conversationView}>
+                    <TouchableOpacity onPress={() => this.postText()}>
+                      <View style={styles.conversationViewSection}>
+                          <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
+                          <Text style={styles.conversationViewSectionText}>TEXT</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.postImgOrVideo()}>
+                      <View style={styles.conversationViewSection}>
+                          <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
+                          <Text style={styles.conversationViewSectionText}>IMAGE/VIDEO</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.postLink()}>
+                      <View style={styles.conversationViewSection}>
+                          <Image source={require('../assets/img/NavLogo.png')} style={styles.conversationViewSectionImage} />
+                          <Text style={styles.conversationViewSectionText}>LINK</Text>
+                      </View>
+                    </TouchableOpacity>
+                </View>
+              </View>
+              
+            </View>
+            </TouchableWithoutFeedback>
+          {/*</View>*/}
+         
         </Modal>
 
 
@@ -153,6 +218,7 @@ class Home extends React.Component {
         </TouchableOpacity>
 
         <View style={styles.InfoFlow}>
+            { postList }
             <View style={styles.info}>         
                 <View style={styles.infoTitle}>
                   <Text style={styles.infoTitleText}>r/news • 2h</Text>
@@ -201,15 +267,9 @@ reactMixin(Home.prototype, TimerMixin)
 
 function mapStateToProps (state) {
   return {
-    deviceVersion: state.device,
-    auth: {
-      form: {
-        isFetching: state.auth
-      }
-    },
-    global: {
-      currentState: state.global,
-      showState: state.global
+    stateData: {
+      homePostList: state.home.homePostList,
+      operation: state.home.operation,
     }
   }
 }
@@ -363,7 +423,10 @@ let styles = StyleSheet.create({
   shareText: {
     paddingLeft: 10,
   }, 
-
+  
+  touchModalView: {
+    flex: 1,
+  },
   modalView: {
     flex: 1,
     alignItems: 'center',
@@ -378,6 +441,7 @@ let styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // position: 'relative',
+    zIndex: 100,
   },
   triangleUp: {
     // position: 'absolute',
