@@ -43,6 +43,7 @@ class Home extends React.Component {
       sort: "Hot",
       layout: "Card",
       modalVisible: false,
+      username: '',
     }
   }
   checkLogin () {
@@ -62,6 +63,14 @@ class Home extends React.Component {
     getHomePosts(params)
 
     setTimeout(()=>this.checkLogin(),0)
+
+    MyStorage.load('username',(data)=>{
+      this.setState({ username: data.username})
+    },() => {
+      console.log('not found username, please login')
+    },() => {
+      console.log('username expire')
+    })
   }
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
@@ -96,7 +105,7 @@ class Home extends React.Component {
       stateData: { homePostList }, 
       navigation: { navigate, dispatch }
     } = this.props;
-    
+
     let postList = homePostList.map((post, index)=>{
        return (
             <View style={styles.info} key={index} >         
@@ -106,10 +115,13 @@ class Home extends React.Component {
                       <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => { dispatch(NavigationActions.navigate({ routeName: 'posts_detail', params: {'postid': 1}, })) }}>
+                <TouchableOpacity onPress={() => { dispatch(NavigationActions.navigate({ routeName: 'posts_detail', params: {'postid': post._id}, })) }}>
+                  <Text style={styles.infoBodyTitle} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
+                      {post.title}
+                  </Text>
                   <View style={styles.infoBody}>
                     <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
-                      {post.title}/{post.content}
+                      {post.content}
                     </Text>                   
                     <Image
                       source={require('../assets/img/NavLogo.png')}
@@ -211,7 +223,7 @@ class Home extends React.Component {
                   <Icon name="edit" size={26} color= '#60F4F4' />
               </View>
               <View style={styles.userText}>
-                  <Text>u/wheatlala</Text>
+                  <Text>{'u/'+ this.state.username}</Text>
                   <Text>Post something insteresting</Text>
               </View>
           </View>
@@ -359,12 +371,20 @@ let styles = StyleSheet.create({
   infoTitleIcon: {
     flex:1,
     alignItems: 'flex-end',
-  },   
+  },
+  infoBodyTitle: {
+    flex: 1,
+    alignItems: 'flex-start',
+    fontSize: 13,
+    lineHeight: 15,
+    // fontWeight: '700',
+    marginTop: 10,
+  },
   infoBody: {
     flexDirection: 'row',
     justifyContent: 'center',
-    height: 100,
-    paddingTop: 10,
+    // height: 100,
+    // paddingTop: 10,
     paddingBottom: 10,
   },
   infoBodyText: {

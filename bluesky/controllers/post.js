@@ -49,4 +49,17 @@ exports.getHomePosts = (req, res) => {
     })
 }
 
+//获取post详细信息
+exports.getpostDetail = (req, res) => {
+    var decoded = jwt.verify(req.query.token, 'shhhhh');
+    
+    var postid = req.query.postid;             
+    var condition = {'_id': mongoose.Types.ObjectId(postid)}; 
+    Post.find(condition, function(err, data){
+        if (err) res.json({success: false, msg: err})
+        res.json({success: true, msg: "获取post详细信息成功", data: data[0]})
+    })
+
+}
+
  

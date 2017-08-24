@@ -55,11 +55,20 @@ class postCreate extends React.Component {
     })
   }
   createPost () {
-    let {actions:{ createPost }} = this.props
-    
+    let { 
+      stateData: { operation }, 
+      navigation: { navigate, dispatch },
+      actions: { createPost }
+    } = this.props;
+
     createPost(this.state.postTitle, this.state.postContent)
-    .then(()=>{
-      
+    .then((data)=>{
+      if(operation.result){
+        dispatch(NavigationActions.navigate({ routeName: 'posts_detail', params: {postid:data._id}}))
+        //this.showPopup(true)
+      } else {
+        //this.showPopup(false)
+      }
     })
   }
   selectPhotoTapped() {

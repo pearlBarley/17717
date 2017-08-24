@@ -31,6 +31,7 @@ export function login (username, password) {
               dispatch(signinResult(data.success)) 
               if (data.success) {
                 MyStorage.save('login-token',{token: data.token})
+                MyStorage.save('username',{username: data.username})
                 resolve()
                 // const resetAction = NavigationActions.reset({
                 //   index: 1,

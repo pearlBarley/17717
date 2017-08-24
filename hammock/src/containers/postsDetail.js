@@ -15,7 +15,7 @@ import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as homeActions from '../actions/homeActions'
+import * as postActions from '../actions/postActions'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 
@@ -34,13 +34,22 @@ class postsDetail extends React.Component {
     }
   }
   componentDidMount () {
-    this.setTimeout(() => {},2500)
+    let { 
+      stateData: { postDetail }, 
+      navigation: { navigate, dispatch, state: { params:{postid} }},
+      actions: { getpostDetail }
+    } = this.props;
+    getpostDetail(postid)
   }
   startConversation () {
     alert(1111)
   }
   render () {
-    const { navigate, dispatch } = this.props.navigation;
+    let { 
+      stateData: { postDetail }, 
+      navigation: { navigate, dispatch }
+    } = this.props;
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.multipleChoice}>
@@ -87,8 +96,14 @@ class postsDetail extends React.Component {
                   </View>
                 </View>
                 <TouchableOpacity onPress={() => this.startConversation()}>
+                  <Text style={styles.infoBodyTitle} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
+                      {postDetail.title}
+                  </Text>
                   <View style={styles.infoBody}>
-                    <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
+                    
+                    <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
+                      {postDetail.content}
+                    </Text>                   
                     <Image
                       source={require('../assets/img/NavLogo.png')}
                       style={styles.thumbnails}
@@ -236,320 +251,6 @@ class postsDetail extends React.Component {
 
 
             
-            {/**测试数据**/}
-            <View style={styles.comments}>                   
-                <View style={styles.replyFrame}>
-                  <View style={styles.commentsTitle}>
-                    <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => this.startConversation()}>
-                    <View style={styles.commentsBody}>
-                      <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                      {/*<Image
-                        source={require('../assets/img/NavLogo.png')}
-                        style={styles.thumbnails}
-                      />*/}
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.commentsAction}>
-                        <View style={styles.commentsMoreAction}>
-                            <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                        </View>
-                        <View style={styles.reply}>
-                            <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                            <Text style={styles.replyText} >Reply</Text>
-                        </View>  
-                        <View style={styles.commentsVote}>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                            <Text style={styles.commentsVoteText} >16.0k</Text>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                        </View>                       
-                  </View>
-
-                 <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                      <View style={styles.commentsTitle}>
-                        <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                      </View>
-                      <TouchableOpacity onPress={() => this.startConversation()}>
-                        <View style={styles.commentsBody}>
-                          <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                          {/*<Image
-                            source={require('../assets/img/NavLogo.png')}
-                            style={styles.thumbnails}
-                          />*/}
-                        </View>
-                      </TouchableOpacity>
-                      <View style={styles.commentsAction}>
-                            <View style={styles.commentsMoreAction}>
-                                <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                            </View>
-                            <View style={styles.reply}>
-                                <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                <Text style={styles.replyText} >Reply</Text>
-                            </View>  
-                            <View style={styles.commentsVote}>
-                                <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                <Text style={styles.commentsVoteText} >16.0k</Text>
-                                <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                            </View>                       
-                      </View>
-
-                      <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                            <View style={styles.commentsTitle}>
-                              <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => this.startConversation()}>
-                              <View style={styles.commentsBody}>
-                                <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                                {/*<Image
-                                  source={require('../assets/img/NavLogo.png')}
-                                  style={styles.thumbnails}
-                                />*/}
-                              </View>
-                            </TouchableOpacity>
-                            <View style={styles.commentsAction}>
-                                  <View style={styles.commentsMoreAction}>
-                                      <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                                  </View>
-                                  <View style={styles.reply}>
-                                      <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.replyText} >Reply</Text>
-                                  </View>  
-                                  <View style={styles.commentsVote}>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.commentsVoteText} >16.0k</Text>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                                  </View>                       
-                            </View>
-                            
-                            <View style={styles.moreReply}>
-                              <Text style={styles.moreReplyText}>1 MORE REPLY</Text>
-                            </View>
-
-                        {/*sub sub replyFrame*/}
-                        </View> 
-
-                        <View style={styles.moreReply}>
-                          <Text style={styles.moreReplyText}>12 MORE REPLY</Text>
-                        </View>
-
-                  {/*sub replyFrame*/}
-                  </View> 
-
-                 {/*replyFrame*/}
-                </View> 
-
-             {/*comments*/}
-            </View>
-                        <View style={styles.comments}>                   
-                <View style={styles.replyFrame}>
-                  <View style={styles.commentsTitle}>
-                    <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => this.startConversation()}>
-                    <View style={styles.commentsBody}>
-                      <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                      {/*<Image
-                        source={require('../assets/img/NavLogo.png')}
-                        style={styles.thumbnails}
-                      />*/}
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.commentsAction}>
-                        <View style={styles.commentsMoreAction}>
-                            <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                        </View>
-                        <View style={styles.reply}>
-                            <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                            <Text style={styles.replyText} >Reply</Text>
-                        </View>  
-                        <View style={styles.commentsVote}>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                            <Text style={styles.commentsVoteText} >16.0k</Text>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                        </View>                       
-                  </View>
-
-                 <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                      <View style={styles.commentsTitle}>
-                        <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                      </View>
-                      <TouchableOpacity onPress={() => this.startConversation()}>
-                        <View style={styles.commentsBody}>
-                          <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                          {/*<Image
-                            source={require('../assets/img/NavLogo.png')}
-                            style={styles.thumbnails}
-                          />*/}
-                        </View>
-                      </TouchableOpacity>
-                      <View style={styles.commentsAction}>
-                            <View style={styles.commentsMoreAction}>
-                                <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                            </View>
-                            <View style={styles.reply}>
-                                <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                <Text style={styles.replyText} >Reply</Text>
-                            </View>  
-                            <View style={styles.commentsVote}>
-                                <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                <Text style={styles.commentsVoteText} >16.0k</Text>
-                                <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                            </View>                       
-                      </View>
-
-                      <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                            <View style={styles.commentsTitle}>
-                              <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => this.startConversation()}>
-                              <View style={styles.commentsBody}>
-                                <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                                {/*<Image
-                                  source={require('../assets/img/NavLogo.png')}
-                                  style={styles.thumbnails}
-                                />*/}
-                              </View>
-                            </TouchableOpacity>
-                            <View style={styles.commentsAction}>
-                                  <View style={styles.commentsMoreAction}>
-                                      <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                                  </View>
-                                  <View style={styles.reply}>
-                                      <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.replyText} >Reply</Text>
-                                  </View>  
-                                  <View style={styles.commentsVote}>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.commentsVoteText} >16.0k</Text>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                                  </View>                       
-                            </View>
-                            
-                            <View style={styles.moreReply}>
-                              <Text style={styles.moreReplyText}>1 MORE REPLY</Text>
-                            </View>
-
-                        {/*sub sub replyFrame*/}
-                        </View> 
-
-                        <View style={styles.moreReply}>
-                          <Text style={styles.moreReplyText}>12 MORE REPLY</Text>
-                        </View>
-
-                  {/*sub replyFrame*/}
-                  </View> 
-
-                 {/*replyFrame*/}
-                </View> 
-
-             {/*comments*/}
-            </View>
-                        <View style={styles.comments}>                   
-                <View style={styles.replyFrame}>
-                  <View style={styles.commentsTitle}>
-                    <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => this.startConversation()}>
-                    <View style={styles.commentsBody}>
-                      <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                      {/*<Image
-                        source={require('../assets/img/NavLogo.png')}
-                        style={styles.thumbnails}
-                      />*/}
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.commentsAction}>
-                        <View style={styles.commentsMoreAction}>
-                            <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                        </View>
-                        <View style={styles.reply}>
-                            <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                            <Text style={styles.replyText} >Reply</Text>
-                        </View>  
-                        <View style={styles.commentsVote}>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                            <Text style={styles.commentsVoteText} >16.0k</Text>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                        </View>                       
-                  </View>
-
-                 <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                      <View style={styles.commentsTitle}>
-                        <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                      </View>
-                      <TouchableOpacity onPress={() => this.startConversation()}>
-                        <View style={styles.commentsBody}>
-                          <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                          {/*<Image
-                            source={require('../assets/img/NavLogo.png')}
-                            style={styles.thumbnails}
-                          />*/}
-                        </View>
-                      </TouchableOpacity>
-                      <View style={styles.commentsAction}>
-                            <View style={styles.commentsMoreAction}>
-                                <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                            </View>
-                            <View style={styles.reply}>
-                                <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                <Text style={styles.replyText} >Reply</Text>
-                            </View>  
-                            <View style={styles.commentsVote}>
-                                <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                <Text style={styles.commentsVoteText} >16.0k</Text>
-                                <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                            </View>                       
-                      </View>
-
-                      <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                            <View style={styles.commentsTitle}>
-                              <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => this.startConversation()}>
-                              <View style={styles.commentsBody}>
-                                <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                                {/*<Image
-                                  source={require('../assets/img/NavLogo.png')}
-                                  style={styles.thumbnails}
-                                />*/}
-                              </View>
-                            </TouchableOpacity>
-                            <View style={styles.commentsAction}>
-                                  <View style={styles.commentsMoreAction}>
-                                      <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                                  </View>
-                                  <View style={styles.reply}>
-                                      <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.replyText} >Reply</Text>
-                                  </View>  
-                                  <View style={styles.commentsVote}>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.commentsVoteText} >16.0k</Text>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                                  </View>                       
-                            </View>
-                            
-                            <View style={styles.moreReply}>
-                              <Text style={styles.moreReplyText}>1 MORE REPLY</Text>
-                            </View>
-
-                        {/*sub sub replyFrame*/}
-                        </View> 
-
-                        <View style={styles.moreReply}>
-                          <Text style={styles.moreReplyText}>12 MORE REPLY</Text>
-                        </View>
-
-                  {/*sub replyFrame*/}
-                  </View> 
-
-                 {/*replyFrame*/}
-                </View> 
-
-             {/*comments*/}
-            </View>
-            {/**测试数据**/}
 
 
         </View>
@@ -568,15 +269,9 @@ reactMixin(postsDetail.prototype, TimerMixin)
 
 function mapStateToProps (state) {
   return {
-    deviceVersion: state.device,
-    auth: {
-      form: {
-        isFetching: state.auth
-      }
-    },
-    global: {
-      currentState: state.global,
-      showState: state.global
+    stateData: {
+      postDetail: state.posts.postDetail,
+      operation: state.posts.operation,
     }
   }
 }
@@ -584,7 +279,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators({ ...homeActions }, dispatch)
+    actions: bindActionCreators({ ...postActions }, dispatch)
   }
 }
 
@@ -671,11 +366,19 @@ let styles = StyleSheet.create({
   infoTitleIcon: {
     flex:1,
     alignItems: 'flex-end',
-  },   
+  }, 
+  infoBodyTitle: {
+    flex: 1,
+    alignItems: 'flex-start',
+    fontSize: 18,
+    lineHeight: 15,
+    fontWeight: '700',
+    marginTop: 10,
+  }, 
   infoBody: {
     flexDirection: 'row',
     justifyContent: 'center',
-    height: 100,
+    // height: 100,
     paddingTop: 10,
     paddingBottom: 10,
   },

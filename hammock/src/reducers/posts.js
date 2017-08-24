@@ -5,6 +5,7 @@ import { POST } from './mutation-types'
 
 const initialState = {
   loaded: false,
+  postDetail: {},
   operation: {
       type: '',    // get / add / update / delete
       name: '',    // 中文名称
@@ -14,7 +15,7 @@ const initialState = {
 }
 
 const actionHandler = {
-  [POST.CREATE_RESULT]: (state, action) => {
+  [POST.CREATEPOST_RESULT]: (state, action) => {
     return {
         // cateList: action.data,
         operation: {
@@ -24,6 +25,17 @@ const actionHandler = {
             msg: ''
         }
     }   
+  },
+  [POST.GETPOSTDETAIL_RESULT]: (state, action) => {
+     return {
+        postDetail: action.data.data,
+        operation: {
+            type: 'post',
+            name: '创建帖子',
+            result: action.data.success,
+            msg: ''
+        }
+     }
   },
 }
 

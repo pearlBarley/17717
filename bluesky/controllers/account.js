@@ -72,7 +72,8 @@ exports.login = (req, res) => {
             res.json({
                 success: true,
                 message: '登陆成功',
-                token: token
+                token: token,
+                username: username,
             });
            
         }else{

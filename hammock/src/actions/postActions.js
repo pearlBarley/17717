@@ -30,7 +30,7 @@ export function createPost (title, content) {
         .then((data) => {
               console.log('data',data)
               dispatch(createResult(data.success))
-              resolve()
+              resolve(data.data)
         })
         .catch((err) => {  
           console.warn(err);  
@@ -42,21 +42,35 @@ export function createPost (title, content) {
 
 export function createResult (success) {
   return {
-    type: POST.CREATE_RESULT,
+    type: POST.CREATEPOST_RESULT,
     success: success
   }
 }
 
-    // let url = `${this.host}/home/${api}?brandName=${this.brandName}`
 
-    // fetch(url)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         let tmpData = data;
-    //         cacheData[api] = tmpData;
-    //         resolve(tmpData);
-    //     })
-    //     .catch((error) => {
-    //         // console.warn('getDataFromServererror:',error)
-    //         reject(error);
-    //     });
+
+//获取postdetail
+export function getpostDetail (postid) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+        fetch(`${config.host}:${config.port}/api/getpostDetail?postid=${postid}`)
+        // .then(res=>res.json()) 
+        .then((data) => {
+              dispatch(getPostDetailResult(data))
+              resolve()
+        })
+        .catch((err) => {  
+          console.warn(err);  
+        })
+        .done();
+    })
+  }
+}
+
+export function getPostDetailResult (data) {
+  return {
+    type: POST.GETPOSTDETAIL_RESULT,
+    data: data
+  }
+}
+
