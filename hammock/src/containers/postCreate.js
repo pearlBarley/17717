@@ -11,6 +11,7 @@ import{
     TouchableOpacity,
     Image,
     TextInput,
+    PixelRatio,
   }from 'react-native'
 import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
@@ -18,7 +19,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as postActions from '../actions/postActions'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
+let ImagePicker = require('react-native-image-picker');
 
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
@@ -35,6 +36,8 @@ class postCreate extends React.Component {
         postContentHeight: 0,
         restCount: '',
         maxTitleLength: 300,
+        avatarSource: null,
+        videoSource: null,
     }
     this.createPost = this.createPost.bind(this)
   }
@@ -59,8 +62,150 @@ class postCreate extends React.Component {
       
     })
   }
+  selectPhotoTapped() {
+    const options = {
+      quality: 1.0,
+      maxWidth: 500,
+      maxHeight: 500,
+      storageOptions: {
+        skipBackup: true
+      }
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        let source = { uri: response.uri };
+
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          avatarSource: source
+        });
+      }
+    });
+  }
+
+  selectVideoTapped() {
+    const options = {
+      title: 'Video Picker',
+      takePhotoButtonTitle: 'Take Video...',
+      mediaType: 'video',
+      videoQuality: 'medium'
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled video picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        this.setState({
+          videoSource: response.uri
+        });
+      }
+    });
+  }
+  launchCamera() {
+    var options = {
+      title: 'Select Avatar',
+      customButtons: [
+        {name: 'fb', title: 'Choose Photo from Facebook'},
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    };
+    ImagePicker.launchCamera(options, (response)  => {
+      console.log(response)
+    });
+  }
+  launchImageLibrary() {
+    var options = {
+      title: 'Select Avatar',
+      customButtons: [
+        {name: 'fb', title: 'Choose Photo from Facebook'},
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    };
+    ImagePicker.launchImageLibrary(options, (response)  => {
+      console.log(response)
+    });
+  }
+
   render () {
-    const { navigate, dispatch } = this.props.navigation;
+    const { navigate, dispatch, state:{ params:{title} } } = this.props.navigation;
+    let contentLayout;
+    if(title === 'Text'){
+      contentLayout = (
+          <TextInput
+            multiline = {true}
+            defaultValue=""
+            underlineColorAndroid="transparent"
+            placeholder="Your text post (optional)"
+            style={[styles.textInput, {height: Math.max(35, this.state.postContentHeight)}]}
+            onContentSizeChange={(event) => {this.setState({postContentHeight: event.nativeEvent.contentSize.height});}}          
+            onChangeText={(postContent) => this.setState({postContent})}
+            value={this.state.postContent}
+          />)
+    } else if(title === 'Image/Video'){
+      contentLayout = (
+          <View style={styles.avatarContainerView}>  
+              <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                <View style={[styles.avatar, styles.avatarContainer, {marginBottom: 20}]}>
+                { this.state.avatarSource === null ? <Text>Select a Photo</Text> :
+                  <Image style={styles.avatar} source={this.state.avatarSource} />
+                }
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={this.selectVideoTapped.bind(this)}>
+                <View style={[styles.avatar, styles.avatarContainer]}>
+                  <Text>Select a Video</Text>
+                </View>
+              </TouchableOpacity>
+              { this.state.videoSource &&
+                <Text style={{margin: 8, textAlign: 'center'}}>{this.state.videoSource}</Text>
+              }
+
+              <TouchableOpacity onPress={this.launchCamera.bind(this)}>
+                <View style={[styles.avatar, styles.avatarContainer]}>
+                  <Text>launchCamera</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={this.launchImageLibrary.bind(this)}>
+                <View style={[styles.avatar, styles.avatarContainer]}>
+                  <Text>launchImageLibrary</Text>
+                </View>
+              </TouchableOpacity>
+          </View>
+       )
+    } else if(title === 'Link'){
+
+    }
     return (
       <View style={styles.container}>
         <View style={styles.multipleChoice}>
@@ -81,16 +226,9 @@ class postCreate extends React.Component {
           value={this.state.postTitle}
         />
         <Text style={styles.restCount}>{this.state.restCount}</Text>
-        <TextInput
-          multiline = {true}
-          defaultValue=""
-          underlineColorAndroid="transparent"
-          placeholder="Your text post (optional)"
-          style={[styles.textInput, {height: Math.max(35, this.state.postContentHeight)}]}
-          onContentSizeChange={(event) => {this.setState({postContentHeight: event.nativeEvent.contentSize.height});}}          
-          onChangeText={(postContent) => this.setState({postContent})}
-          value={this.state.postContent}
-        />
+
+         {contentLayout}
+
 
       </View>
     )
@@ -164,6 +302,24 @@ let styles = StyleSheet.create({
     fontSize: 8,
     marginBottom: 10,
     paddingRight: 10,
-  }
+  },
+  avatarContainerView:{
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  avatarContainer: {
+    
+    borderColor: '#9B9B9B',
+    borderWidth: 1 / PixelRatio.get(),
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  avatar: {
+    borderRadius: 75,
+    width: 150,
+    height: 150
+  },
      
 })
