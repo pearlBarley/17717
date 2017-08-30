@@ -6,6 +6,8 @@ import { HOME } from './mutation-types'
 const initialState = {
   loaded: false,
   homePostList: [],
+  pageSize :10,
+  currentPage : 1,
   operation: {
       type: '',    // get / add / update / delete
       name: '',    // 中文名称

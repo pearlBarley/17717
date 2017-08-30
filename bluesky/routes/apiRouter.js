@@ -20,6 +20,6 @@ router.post('/signup', apiController.account.signup);
 router.post('/createPost', apiController.post.createPost);
 router.get('/getHomePosts', apiController.post.getHomePosts);
 router.get('/getpostDetail', apiController.post.getpostDetail);
-
+router.post('/votePost', apiController.post.votePost);
 
 module.exports = router;

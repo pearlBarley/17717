@@ -56,9 +56,7 @@ class Home extends React.Component {
     })
   }
   componentDidMount () {
-    const { actions: { getHomePosts } } = this.props
-    let pageSize = 10
-    let currentPage = 1
+    const {stateData: { pageSize, currentPage }, actions: { getHomePosts } } = this.props
     let params = { pageSize, currentPage }
     getHomePosts(params)
 
@@ -100,6 +98,27 @@ class Home extends React.Component {
         this.setModalVisible(false)
     } 
   }
+  voteAction (post, action) {
+    let {
+      stateData: { pageSize, currentPage },
+      actions: { votePost, cancelVotePost, getHomePosts }
+    } = this.props;
+
+    let params = { postid: post._id, 
+                   action: action, 
+                   alreadyUpvote: post.alreadyUpvote,
+                   alreadyOppose: post.alreadyOppose,
+                 }
+    votePost(params)       
+    .then(()=>{
+      getHomePosts({ pageSize, currentPage })
+    })
+
+  }
+  jumpToDetail (post) {
+    let { navigation: { navigate, dispatch } } = this.props;
+    dispatch(NavigationActions.navigate({ routeName: 'posts_detail', params: {'postid': post._id, 'ifScroll': true }, }))
+  }
   render () {
     let { 
       stateData: { homePostList }, 
@@ -131,13 +150,19 @@ class Home extends React.Component {
                 </TouchableOpacity>
                 <View style={styles.infoAction}>
                       <View style={styles.vote}>
-                           <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
-                           <Text style={styles.voteText} >16.0k</Text>
-                           <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
+                           <TouchableOpacity onPress={this.voteAction.bind(this, post,1)}>
+                               <Icon style={styles.voteIcon} name="arrow-up" size={15} color= {post.alreadyUpvote?'#EF4A21':'#AAAAAA'} />
+                           </TouchableOpacity>
+                           <Text style={styles.voteText} >{post.voteNum}</Text>
+                           <TouchableOpacity onPress={() => this.voteAction(post,0)}>
+                               <Icon style={styles.voteIcon} name="arrow-down" size={15} color= {post.alreadyOppose?'#EF4A21':'#AAAAAA'} />
+                           </TouchableOpacity>
                       </View>
                       <View style={styles.comment}>
-                           <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
-                           <Text style={styles.commentText} >2.4k</Text>
+                           <TouchableOpacity style={styles.commentTouch} onPress={() => this.jumpToDetail(post)}>
+                              <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
+                              <Text style={styles.commentText} >2.4k</Text>
+                           </TouchableOpacity>
                       </View>
                       <View style={styles.share}>
                            <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
@@ -231,39 +256,6 @@ class Home extends React.Component {
 
         <View style={styles.InfoFlow}>
             { postList }
-            <View style={styles.info}>         
-                <View style={styles.infoTitle}>
-                  <Text style={styles.infoTitleText}>r/news • 2h</Text>
-                  <View style={styles.infoTitleIcon}>
-                      <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
-                  </View>
-                </View>
-                <TouchableOpacity onPress={() => { dispatch(NavigationActions.navigate({ routeName: 'posts_detail', params: {'postid': 1}, })) }}>
-                  <View style={styles.infoBody}>
-                    <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                    <Image
-                      source={require('../assets/img/NavLogo.png')}
-                      style={styles.thumbnails}
-                    />
-                  </View>
-                </TouchableOpacity>
-                <View style={styles.infoAction}>
-                      <View style={styles.vote}>
-                           <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
-                           <Text style={styles.voteText} >16.0k</Text>
-                           <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
-                      </View>
-                      <View style={styles.comment}>
-                           <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
-                           <Text style={styles.commentText} >2.4k</Text>
-                      </View>
-                      <View style={styles.share}>
-                           <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
-                           <Text style={styles.shareText} >Share</Text>
-                      </View>                           
-                </View>
-            </View>
-
         </View>
 
       </ScrollView>
@@ -281,6 +273,8 @@ function mapStateToProps (state) {
   return {
     stateData: {
       homePostList: state.home.homePostList,
+      pageSize: state.home.pageSize, 
+      currentPage: state.home.currentPage,
       operation: state.home.operation,
     }
   }
@@ -426,6 +420,9 @@ let styles = StyleSheet.create({
     borderLeftColor: '#DDDDDD',
     borderRightWidth: 1,
     borderRightColor: '#DDDDDD',
+  },
+  commentTouch: {
+    flexDirection: 'row',
   },
   commentIcon: {
   },

@@ -5,8 +5,8 @@ const mongoose = { Schema } = require('mongoose');
 const postSchema = new mongoose.Schema({
   title: { type: String, default: '' },
   content: String,
-  upvote: Number,
-  oppose: Number,
+  upvote: { type: Number, default: 0 },
+  oppose: { type: Number, default: 0 },
   closed: Boolean,
   closeDate: Date,
 
@@ -17,6 +17,9 @@ const postSchema = new mongoose.Schema({
   replier_ids: [Schema.Types.ObjectId],
   tag_ids: [Schema.Types.ObjectId],
   comment_ids:[Schema.Types.ObjectId],
+  upvote_ids:[Schema.Types.ObjectId],
+  oppose_ids:[Schema.Types.ObjectId],
+
 
 }, { timestamps: true });
 

@@ -42,3 +42,34 @@ export function getHomePostsResult (data) {
     data: data
   }
 }
+
+//投票
+export function votePost (params) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+        // const { username } = getState();
+        let url = `${config.host}:${config.port}/api/votePost`
+        fetch(url, {
+          method: 'post',
+          headers: {
+            //'Accept': 'application/json, text/plain, */\*',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            //'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: JSON.stringify(params),
+          // credentials: "same-origin"
+        })
+        // .then(res=>res.json()) 
+        .then((data) => {
+              console.log('data',data)
+              //dispatch(createResult(data.success))
+              resolve(data.data)
+        })
+        .catch((err) => {  
+          console.warn(err);  
+        })
+        .done();
+    })
+  }
+}

@@ -1,6 +1,7 @@
 'use strict'
 
 import React,{ Component } from 'react'
+//import ReactDOM from 'react-dom';
 import{
     StyleSheet,
     View,
@@ -9,7 +10,9 @@ import{
     ScrollView,
     Picker,
     TouchableOpacity,
+    findNodeHandle,
     Image,
+    FlatList,
   }from 'react-native'
 import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
@@ -17,7 +20,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as postActions from '../actions/postActions'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
+import CommentList from '../components/CommentList'
 
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
@@ -36,13 +39,38 @@ class postsDetail extends React.Component {
   componentDidMount () {
     let { 
       stateData: { postDetail }, 
-      navigation: { navigate, dispatch, state: { params:{postid} }},
+      navigation: { navigate, dispatch, state: { params:{postid, ifScroll} }},
       actions: { getpostDetail }
     } = this.props;
     getpostDetail(postid)
+    if(ifScroll){
+      //jump to comment 
+      // var domNode = ReactDOM.findDOMNode(this.refs.commentsFlow)
+      // domNode.scrollIntoView()
+      //let commentsFlow = findNodeHandle(this.refs.commentsFlow);
+      //this._listRef.getNode().scrollToIndex({viewPosition: 0.5, index: 0});
+      this.refs.commentFlat.scrollToIndex({animated: true, index: 2})
+      //this.refs.commentFlat.scrollToIndex({viewPosition: 0.5, index:0})
+
+    }
+    
   }
   startConversation () {
     alert(1111)
+  }
+  _renderItem (item) { 
+    return   (
+        <CommentList
+          /*onPressItem={this._onPressItem}
+          selected={!!this.state.selected.get(item.id)}*/
+          commentData={item}
+        />
+      )
+  }
+  _getItemLayout(data, index) {
+      //getItemLayout={(data, index) => ( {length: 行高, offset: 行高 * index, index} )}
+      let [length, separator, header] = [50, 24, 0];
+      return {length, offset: (length + separator) * index + header, index};
   }
   render () {
     let { 
@@ -143,117 +171,12 @@ class postsDetail extends React.Component {
             </Picker>
         </View>
 
-        <View style={styles.commentsFlow}>
-            <View style={styles.comments}>                   
-                <View style={styles.replyFrame}>
-                  <View style={styles.commentsTitle}>
-                    <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => this.startConversation()}>
-                    <View style={styles.commentsBody}>
-                      <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                      {/*<Image
-                        source={require('../assets/img/NavLogo.png')}
-                        style={styles.thumbnails}
-                      />*/}
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.commentsAction}>
-                        <View style={styles.commentsMoreAction}>
-                            <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                        </View>
-                        <View style={styles.reply}>
-                            <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                            <Text style={styles.replyText} >Reply</Text>
-                        </View>  
-                        <View style={styles.commentsVote}>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                            <Text style={styles.commentsVoteText} >16.0k</Text>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                        </View>                       
-                  </View>
-
-                 <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                      <View style={styles.commentsTitle}>
-                        <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                      </View>
-                      <TouchableOpacity onPress={() => this.startConversation()}>
-                        <View style={styles.commentsBody}>
-                          <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                          {/*<Image
-                            source={require('../assets/img/NavLogo.png')}
-                            style={styles.thumbnails}
-                          />*/}
-                        </View>
-                      </TouchableOpacity>
-                      <View style={styles.commentsAction}>
-                            <View style={styles.commentsMoreAction}>
-                                <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                            </View>
-                            <View style={styles.reply}>
-                                <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                <Text style={styles.replyText} >Reply</Text>
-                            </View>  
-                            <View style={styles.commentsVote}>
-                                <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                <Text style={styles.commentsVoteText} >16.0k</Text>
-                                <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                            </View>                       
-                      </View>
-
-                      <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                            <View style={styles.commentsTitle}>
-                              <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => this.startConversation()}>
-                              <View style={styles.commentsBody}>
-                                <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                                {/*<Image
-                                  source={require('../assets/img/NavLogo.png')}
-                                  style={styles.thumbnails}
-                                />*/}
-                              </View>
-                            </TouchableOpacity>
-                            <View style={styles.commentsAction}>
-                                  <View style={styles.commentsMoreAction}>
-                                      <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                                  </View>
-                                  <View style={styles.reply}>
-                                      <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.replyText} >Reply</Text>
-                                  </View>  
-                                  <View style={styles.commentsVote}>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.commentsVoteText} >16.0k</Text>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                                  </View>                       
-                            </View>
-                            
-                            <View style={styles.moreReply}>
-                              <Text style={styles.moreReplyText}>1 MORE REPLY</Text>
-                            </View>
-
-                        {/*sub sub replyFrame*/}
-                        </View> 
-
-                        <View style={styles.moreReply}>
-                          <Text style={styles.moreReplyText}>12 MORE REPLY</Text>
-                        </View>
-
-                  {/*sub replyFrame*/}
-                  </View> 
-
-                 {/*replyFrame*/}
-                </View> 
-
-             {/*comments*/}
-            </View>
-
-
-            
-
-
-        </View>
+        <FlatList
+          data={[{key: 'a'}, {key: 'b'},{key: 'c'},{key: 'f'},{key: 'r'}]}
+          renderItem={this._renderItem}
+          ref='commentFlat'
+          getItemLayout={this._getItemLayout}
+        />
 
 
       </ScrollView>
@@ -441,92 +364,7 @@ let styles = StyleSheet.create({
     paddingLeft: 10,
     color: '#B0A7A4',
   },
-  commentsFlow: {
-  },
-  comments: {
-    backgroundColor: '#fff',
-    marginTop: 5,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  replyFrame: {
-    marginBottom: 10,
-  },
-  commentsTitle: {
-    display: 'flex',
-    flexDirection: 'row',      
-    alignItems: 'center',      
-    justifyContent: 'center',  
-    paddingTop: 10,
-  },
-  commentsTitleText: {
-    flex:1,                    
-    alignItems: 'flex-start',
-    color: '#B0A7A4',
-  },
-  commentsBody: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingBottom: 5,
-  },
-  commentsBodyText: {
-    flex: 1,
-    alignItems: 'flex-start',
-    fontSize: 12,
-    lineHeight: 15,
-  },
-  commentsAction: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingBottom: 10,
-  },
-  commentsMoreAction: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingRight: 15,
-  },
-  reply: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderLeftWidth: 1,
-    borderLeftColor: '#DDDDDD',
-    borderRightWidth: 1,
-    borderRightColor: '#DDDDDD',
-    paddingLeft: 15,
-    paddingRight: 15,
-  },
-  replyIcon: {
-  },
-  replyText: {
-    paddingLeft: 10,
-    fontSize: 12,
-    color: '#B0A7A4',
-  },
-  commentsVote: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingLeft: 15,
-    paddingRight: 15,
-  },  
-  commentsVoteIcon: {
-  },  
-  commentsVoteText: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    fontSize: 10,
-    color: '#B0A7A4',
-  },
-  moreReply: {
-    backgroundColor: '#EFEDED',
-  },
-  moreReplyText: {
-    fontSize: 10,
-    color: '#908480',
-    textAlign: 'center',
-  },                                  
+                         
 })
 
 
