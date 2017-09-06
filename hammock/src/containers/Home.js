@@ -26,6 +26,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 // import Dimensions from 'Dimensions'
 // var {height, width} = Dimensions.get('window') // Screen dimensions in current orientation
 import storage, { MyStorage } from '../storage/storage';
+import { onShare } from '../util/share'
 
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
@@ -165,8 +166,10 @@ class Home extends React.Component {
                            </TouchableOpacity>
                       </View>
                       <View style={styles.share}>
-                           <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
-                           <Text style={styles.shareText} >Share</Text>
+                           <TouchableOpacity  style={styles.shareTouch} onPress={()=>onShare(post)}>
+                             <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
+                             <Text style={styles.shareText} >Share</Text>
+                           </TouchableOpacity>
                       </View>                           
                 </View>
             </View>
@@ -429,11 +432,16 @@ let styles = StyleSheet.create({
   commentText: {
     paddingLeft: 10,
   },
-  share: {
-    flex: 1,
+  shareTouch: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  share: {
+    flex: 1,
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   shareIcon: {
   },

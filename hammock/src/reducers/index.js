@@ -7,6 +7,7 @@ import home from  './home'
 import signup from './signup'
 import signin from './signin'
 import posts from './posts'
+import comment from './comment'
 
 
 const AppReducer = combineReducers({
@@ -15,6 +16,7 @@ const AppReducer = combineReducers({
   signup,
   signin,
   posts,
+  comment,
 });
 
 export default AppReducer;

@@ -14,6 +14,9 @@ import{
     Image,
     FlatList,
     InteractionManager,
+    TextInput,
+    Dimensions,
+    TouchableWithoutFeedback,
   }from 'react-native'
 import { UIManager} from 'NativeModules';
 import { NavigationActions } from 'react-navigation';
@@ -27,8 +30,12 @@ import CommentList from '../components/CommentList'
 import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
 
+var {
+  height: deviceHeight,
+  width: deviceWidth,
+} = Dimensions.get("window");
 
-class postsDetail extends React.Component {
+class PostsDetail extends React.Component {
 
   constructor(props) {
     super(props)
@@ -36,6 +43,7 @@ class postsDetail extends React.Component {
       sort: "Hot",
       layout: "Card",
       comments: "BEST",
+      text: '',
     }
   }
   componentDidMount () {
@@ -45,6 +53,7 @@ class postsDetail extends React.Component {
       actions: { getpostDetail }
     } = this.props;
     getpostDetail(postid)
+
     if(ifScroll){
       //jump to comment 
       // var domNode = ReactDOM.findDOMNode(this.refs.commentsFlow)
@@ -108,6 +117,16 @@ class postsDetail extends React.Component {
     }
 
   }
+  focus(){}
+  blur(){}
+  showAddComment(){
+    let { 
+      stateData: { postDetail }, 
+      navigation: { navigate, dispatch }
+    } = this.props;
+    dispatch(NavigationActions.navigate({ routeName: 'comment_add', params: {'title': 'Add comment','postDetail':postDetail}, }))
+  }
+
   render () {
     let { 
       stateData: { postDetail }, 
@@ -115,113 +134,126 @@ class postsDetail extends React.Component {
     } = this.props;
 
     return (
-      <ScrollView 
-         style={styles.container}
-         ref={(ref) => this.myScroll = ref}
-         >
-        <View style={styles.multipleChoice}>
-            <Picker
-              selectedValue={this.state.sort}
-              onValueChange={(sort) => this.setState({sort: sort})}
-              style={styles.pickerSort}>
-              <Picker.Item label="Hot" value="Hot" />
-              <Picker.Item label="New" value="New" />
-              <Picker.Item label="Top" value="Top" />
-              <Picker.Item label="Controversial" value="Controversial" />
-            </Picker>
-            <View style={styles.pickerBlank}></View>
-            <View style={styles.pickerLayout}>         
-                <Icon name="align-right" size={20} color= '#AAAAAA' />
-            </View>
-            {/*<Picker
-              selectedValue={this.state.layout}
-              onValueChange={(layout) => this.setState({layout: layout})}
-              style={styles.pickerLayout}>
-              <Picker.Item label="Card" value="Card" />
-              <Picker.Item label="Compact" value="Compact" />
-              <Picker.Item label="Media gallery" value="Media gallery" />
-            </Picker>*/}
-        </View>
-        <TouchableOpacity onPress={() => this.startConversation()}>
-          <View style={styles.userPost}>
-              <View style={styles.editIcon}>         
-                  <Icon name="edit" size={26} color= '#60F4F4' />
+      <View>
+        <ScrollView 
+          style={styles.container}
+          ref={(ref) => this.myScroll = ref}
+          >
+          <View style={styles.multipleChoice}>
+              <Picker
+                selectedValue={this.state.sort}
+                onValueChange={(sort) => this.setState({sort: sort})}
+                style={styles.pickerSort}>
+                <Picker.Item label="Hot" value="Hot" />
+                <Picker.Item label="New" value="New" />
+                <Picker.Item label="Top" value="Top" />
+                <Picker.Item label="Controversial" value="Controversial" />
+              </Picker>
+              <View style={styles.pickerBlank}></View>
+              <View style={styles.pickerLayout}>         
+                  <Icon name="align-right" size={20} color= '#AAAAAA' />
               </View>
-              <View style={styles.userText}>
-                  <Text>u/wheatlala</Text>
-                  <Text>Post something insteresting</Text>
+              {/*<Picker
+                selectedValue={this.state.layout}
+                onValueChange={(layout) => this.setState({layout: layout})}
+                style={styles.pickerLayout}>
+                <Picker.Item label="Card" value="Card" />
+                <Picker.Item label="Compact" value="Compact" />
+                <Picker.Item label="Media gallery" value="Media gallery" />
+              </Picker>*/}
+          </View>
+          <TouchableOpacity onPress={() => this.startConversation()}>
+            <View style={styles.userPost}>
+                <View style={styles.editIcon}>         
+                    <Icon name="edit" size={26} color= '#60F4F4' />
+                </View>
+                <View style={styles.userText}>
+                    <Text>u/wheatlala</Text>
+                    <Text>Post something insteresting</Text>
+                </View>
+            </View>
+          </TouchableOpacity>
+
+          <View style={styles.InfoFlow}>
+              <View style={styles.info}>         
+                  <View style={styles.infoTitle}>
+                    <Text style={styles.infoTitleText}>r/news • 2h</Text>
+                    <View style={styles.infoTitleIcon}>
+                        <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
+                    </View>
+                  </View>
+                  <TouchableOpacity onPress={() => this.startConversation()}>
+                    <Text style={styles.infoBodyTitle} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
+                        {postDetail.title}
+                    </Text>
+                    <View style={styles.infoBody}>
+                      
+                      <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
+                        {postDetail.content}
+                      </Text>                   
+                      <Image
+                        source={require('../assets/img/NavLogo.png')}
+                        style={styles.thumbnails}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <View style={styles.infoAction}>
+                        <View style={styles.vote}>
+                            <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
+                            <Text style={styles.voteText} >16.0k</Text>
+                            <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
+                        </View>
+                        <View style={styles.comment}>
+                            <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
+                            <Text style={styles.commentText} >2.4k</Text>
+                        </View>
+                        <View style={styles.share}>
+                            <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
+                            <Text style={styles.shareText} >Share</Text>
+                        </View>                           
+                  </View>
               </View>
           </View>
-        </TouchableOpacity>
 
-        <View style={styles.InfoFlow}>
-            <View style={styles.info}>         
-                <View style={styles.infoTitle}>
-                  <Text style={styles.infoTitleText}>r/news • 2h</Text>
-                  <View style={styles.infoTitleIcon}>
-                      <Icon name="ellipsis-h" size={20} color= '#AAAAAA' />
-                  </View>
-                </View>
-                <TouchableOpacity onPress={() => this.startConversation()}>
-                  <Text style={styles.infoBodyTitle} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
-                      {postDetail.title}
-                  </Text>
-                  <View style={styles.infoBody}>
-                    
-                    <Text style={styles.infoBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
-                      {postDetail.content}
-                    </Text>                   
-                    <Image
-                      source={require('../assets/img/NavLogo.png')}
-                      style={styles.thumbnails}
-                    />
-                  </View>
-                </TouchableOpacity>
-                <View style={styles.infoAction}>
-                      <View style={styles.vote}>
-                           <Icon style={styles.voteIcon} name="arrow-up" size={15} color= '#AAAAAA' />
-                           <Text style={styles.voteText} >16.0k</Text>
-                           <Icon style={styles.voteIcon} name="arrow-down" size={15} color= '#AAAAAA' />
-                      </View>
-                      <View style={styles.comment}>
-                           <Icon style={styles.commentIcon} name="commenting" size={15} color= '#AAAAAA' />
-                           <Text style={styles.commentText} >2.4k</Text>
-                      </View>
-                      <View style={styles.share}>
-                           <Icon style={styles.shareIcon} name="share-square-o" size={15} color= '#AAAAAA' />
-                           <Text style={styles.shareText} >Share</Text>
-                      </View>                           
-                </View>
+
+
+          <View style={styles.multipleChoice}  ref={(commentFlat) => this.commentFlat = commentFlat} onLayout={({nativeEvent:e})=>this.commentFlatLayout(e)}>
+              <Picker
+                selectedValue={this.state.comments}
+                onValueChange={(comments) => this.setState({comments: comments})}
+                style={styles.pickerSortComments}>
+                <Picker.Item label="New" value="NEW" />
+                <Picker.Item label="Top" value="TOP" />           
+                <Picker.Item label="Best" value="BEST" />
+                <Picker.Item label="Q&A" value="Q&A" />
+                <Picker.Item label="Controversial" value="CONTROVERSIAL" />
+              </Picker>
+          </View>
+          
+          <View  >
+            <FlatList
+              data={[{key: 'a'}, {key: 'b'},{key: 'c'},{key: 'f'},{key: 'r'}]}
+              renderItem={this._renderItem}
+              //ref='commentFlat'
+              //ref={(commentFlat) => this.commentFlat = commentFlat}
+              getItemLayout={this._getItemLayout}
+            />
+          </View>
+
+        </ScrollView>
+        <View style={styles.bottomView} >
+          <TouchableWithoutFeedback onPress={()=>this.showAddComment()}>
+            <View>
+              <Text ref='inputComment' style={styles.inputComment}>
+                Add a comment
+              </Text>
             </View>
+          </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.scrollToEnd} >
+            <Icon name="align-right" size={20} color= '#AAAAAA' />
+          </View>
         </View>
-
-
-
-        <View style={styles.multipleChoice}  ref={(commentFlat) => this.commentFlat = commentFlat} onLayout={({nativeEvent:e})=>this.commentFlatLayout(e)}>
-            <Picker
-              selectedValue={this.state.comments}
-              onValueChange={(comments) => this.setState({comments: comments})}
-              style={styles.pickerSortComments}>
-              <Picker.Item label="New" value="NEW" />
-              <Picker.Item label="Top" value="TOP" />           
-              <Picker.Item label="Best" value="BEST" />
-              <Picker.Item label="Q&A" value="Q&A" />
-              <Picker.Item label="Controversial" value="CONTROVERSIAL" />
-            </Picker>
-        </View>
-        
-        <View  >
-          <FlatList
-            data={[{key: 'a'}, {key: 'b'},{key: 'c'},{key: 'f'},{key: 'r'}]}
-            renderItem={this._renderItem}
-            //ref='commentFlat'
-            //ref={(commentFlat) => this.commentFlat = commentFlat}
-            getItemLayout={this._getItemLayout}
-          />
-        </View>
-
-
-      </ScrollView>
     )
   }
 }
@@ -229,7 +261,7 @@ class postsDetail extends React.Component {
 
 
 // 组件卸载时自动注销定时器，也可以在componentWillUnMount手动注销定时器
-reactMixin(postsDetail.prototype, TimerMixin)
+reactMixin(PostsDetail.prototype, TimerMixin)
 
 
 function mapStateToProps (state) {
@@ -250,7 +282,7 @@ function mapDispatchToProps (dispatch) {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(postsDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(PostsDetail)
 
 
 
@@ -405,6 +437,28 @@ let styles = StyleSheet.create({
   shareText: {
     paddingLeft: 10,
     color: '#B0A7A4',
+  },
+  bottomView: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    height: 40,
+    width: deviceWidth,
+    backgroundColor: '#fff',
+    padding: 5,
+  },
+  inputComment: { 
+    borderColor: 'gray', 
+    height: 30,
+    width: deviceWidth,
+    backgroundColor: '#EEE',
+    padding: 5,
+  }, 
+  scrollToEnd: {
+    position: 'absolute',
+    bottom: 8,
+    right: 10,
+    zIndex: 100,
   },
                          
 })

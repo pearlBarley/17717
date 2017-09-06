@@ -25,7 +25,7 @@ import TimerMixin from 'react-timer-mixin'
 let reactMixin = require('react-mixin')
 
 
-class postCreate extends React.Component {
+class PostCreate extends React.Component {
 
   constructor(props) {
     super(props)
@@ -247,7 +247,7 @@ class postCreate extends React.Component {
 
 
 // 组件卸载时自动注销定时器，也可以在componentWillUnMount手动注销定时器
-reactMixin(postCreate.prototype, TimerMixin)
+reactMixin(PostCreate.prototype, TimerMixin)
 
 
 function mapStateToProps (state) {
@@ -267,7 +267,7 @@ function mapDispatchToProps (dispatch) {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(postCreate)
+export default connect(mapStateToProps, mapDispatchToProps)(PostCreate)
 
 
 

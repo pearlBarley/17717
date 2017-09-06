@@ -18,12 +18,13 @@ import Messages from '../containers/Messages'
 import PersonalInfo from '../containers/PersonalInfo'
 import Error from '../containers/Error'
 import EchoView from '../containers/EchoView'
-import postsDetail from '../containers/postsDetail'
+import PostsDetail from '../containers/PostsDetail'
 import PersonnalInfoStack from '../containers/PersonnalInfoStack'
 import SignPage from '../containers/SignPage'
 import SignupPage from '../containers/SignupPage'
 import SigninPage from '../containers/SigninPage'
-import postCreate from '../containers/postCreate'
+import PostCreate from '../containers/PostCreate'
+import CommentAdd from '../containers/CommentAdd'
 
 // import LoginScreen from './components/LoginScreen';
 // import MainScreen from './components/MainScreen';
@@ -271,11 +272,15 @@ const pageNavigator = StackNavigator({
     },
     create_post: {
       path: 'createPost/:title',
-      screen: postCreate,
+      screen: PostCreate,
     },
     posts_detail: {
       path: 'detail/:postid',
-      screen: postsDetail,
+      screen: PostsDetail,
+    },
+    comment_add: {
+      path: 'commentadd/:postid',
+      screen: CommentAdd,
     },
     personnal_info_stack: {
       path: 'personnalinfo/:stackname',
@@ -333,6 +338,13 @@ const pageNavigator = StackNavigator({
                 title = `${navigation.state.params.title}`
                 headerTitleStyle.alignSelf = 'center'
                 headerRight = (<Text onPress={navigation.state.params.createPost} style={{color: '#5685CC',marginRight:15}}>POST</Text>)
+                headerLeft = (<Icon name="ellipsis-h" size={22} color= '#AAAAAA' style={styles.headerRight} />)
+             break
+        case 'comment_add':
+                headerVisible = true
+                title = `${navigation.state.params.title}`
+                headerTitleStyle.alignSelf = 'center'
+                headerRight = (<Text onPress={navigation.state.params.addComment} style={{color: '#5685CC',marginRight:15}}>SEND</Text>)
                 headerLeft = (<Icon name="ellipsis-h" size={22} color= '#AAAAAA' style={styles.headerRight} />)
              break
         default:
