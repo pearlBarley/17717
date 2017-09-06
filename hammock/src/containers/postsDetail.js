@@ -24,6 +24,7 @@ import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as postActions from '../actions/postActions'
+import * as commentActions from '../actions/commentActions'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommentList from '../components/CommentList'
 
@@ -50,10 +51,10 @@ class PostsDetail extends React.Component {
     let { 
       stateData: { postDetail }, 
       navigation: { navigate, dispatch, state: { params:{postid, ifScroll} }},
-      actions: { getpostDetail }
+      actions: { getpostDetail, getCommentData }
     } = this.props;
     getpostDetail(postid)
-
+    getCommentData(postid)
     if(ifScroll){
       //jump to comment 
       // var domNode = ReactDOM.findDOMNode(this.refs.commentsFlow)
@@ -117,6 +118,12 @@ class PostsDetail extends React.Component {
     }
 
   }
+  scrollToEnd(){
+    this.myScroll.scrollToEnd()
+  }
+  scrollToTop(){
+    this.myScroll.scrollTo({ x:0, y:0, animated:true });
+  }
   focus(){}
   blur(){}
   showAddComment(){
@@ -129,7 +136,7 @@ class PostsDetail extends React.Component {
 
   render () {
     let { 
-      stateData: { postDetail }, 
+      stateData: { postDetail, commentData }, 
       navigation: { navigate, dispatch }
     } = this.props;
 
@@ -232,7 +239,8 @@ class PostsDetail extends React.Component {
           
           <View  >
             <FlatList
-              data={[{key: 'a'}, {key: 'b'},{key: 'c'},{key: 'f'},{key: 'r'}]}
+              //data={[{key: 'a'}, {key: 'b'},{key: 'c'},{key: 'f'},{key: 'r'}]}
+              data={commentData}
               renderItem={this._renderItem}
               //ref='commentFlat'
               //ref={(commentFlat) => this.commentFlat = commentFlat}
@@ -250,9 +258,11 @@ class PostsDetail extends React.Component {
             </View>
           </TouchableWithoutFeedback>
           </View>
-          <View style={styles.scrollToEnd} >
-            <Icon name="align-right" size={20} color= '#AAAAAA' />
-          </View>
+          <TouchableWithoutFeedback onPress={()=>this.scrollToEnd()}>
+            <View style={styles.scrollToEnd} >
+              <Icon name="align-right" size={20} color= '#AAAAAA' />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
     )
   }
@@ -269,6 +279,7 @@ function mapStateToProps (state) {
     stateData: {
       postDetail: state.posts.postDetail,
       operation: state.posts.operation,
+      commentData: state.comment.commentData
     }
   }
 }
@@ -276,7 +287,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators({ ...postActions }, dispatch)
+    actions: bindActionCreators({ ...postActions, ...commentActions }, dispatch)
   }
 }
 

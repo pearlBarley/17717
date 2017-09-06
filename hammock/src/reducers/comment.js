@@ -5,6 +5,7 @@ import { COMMENT } from './mutation-types'
 
 const initialState = {
   loaded: false,
+  commentData: [],
   operation: {
       type: '',    // get / add / update / delete
       name: '',    // 中文名称
@@ -14,12 +15,23 @@ const initialState = {
 }
 
 const actionHandler = {
+  [COMMENT.GET_COMMENT_RESULT]: (state, action) => {
+    return {
+        commentData: action.data.data,
+        operation: {
+            type: 'comment',
+            name: '获取评论',
+            result: action.success,
+            msg: ''
+        }
+    }   
+  },
   [COMMENT.ADD_COMMENT_RESULT]: (state, action) => {
     return {
         // cateList: action.data,
         operation: {
             type: 'comment',
-            name: '创建帖子',
+            name: '添加评论',
             result: action.success,
             msg: ''
         }

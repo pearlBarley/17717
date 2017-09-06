@@ -48,3 +48,27 @@ export function addCommentResult (success) {
 }
 
 
+//获取评论
+export function getCommentData (postid) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+        fetch(`${config.host}:${config.port}/api/getCommentData?postid=${postid}`)
+        // .then(res=>res.json()) 
+        .then((data) => {
+              dispatch(getCommentDataResult(data))
+              resolve()
+        })
+        .catch((err) => {  
+          console.warn(err);  
+        })
+        .done();
+    })
+  }
+}
+
+export function getCommentDataResult (data) {
+  return {
+    type: COMMENT.GET_COMMENT_RESULT,
+    data: data
+  }
+}

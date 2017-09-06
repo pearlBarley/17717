@@ -24,6 +24,7 @@ class CommentList extends React.Component {
   
   render () {
     let commentData = this.props.commentData
+    console.log('commentData',commentData)
     return (
           <View ref="commentsFlow" style={styles.commentsFlow}>
             <View style={styles.comments}>                   

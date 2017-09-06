@@ -24,3 +24,17 @@ exports.addComment = (req, res) => {
         res.json({success: true, msg: "创建comment成功", data: data})
     })
 }
+
+
+//获取comment信息
+exports.getCommentData = (req, res) => {
+    var decoded = jwt.verify(req.query.token, 'shhhhh');
+    
+    var postid = req.query.postid;             
+    var condition = {'post_id': mongoose.Types.ObjectId(postid)}; 
+    Comment.find(condition, function(err, data){
+        if(err) { res.json({success: false, msg: err}); return; }
+        res.json({success: true, msg: "获取comment信息成功", data: data})
+    })
+
+}

@@ -31,7 +31,7 @@ const actionHandler = {
         postDetail: action.data.data,
         operation: {
             type: 'post',
-            name: '创建帖子',
+            name: '获取帖子信息',
             result: action.data.success,
             msg: ''
         }

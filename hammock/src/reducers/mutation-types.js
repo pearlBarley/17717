@@ -20,6 +20,7 @@ export const POST = {
 }
 export const COMMENT = {
   ADD_COMMENT_RESULT: 'ADD_COMMENT_RESULT',
+  GET_COMMENT_RESULT: 'GET_COMMENT_RESULT',
 }
 
 export default { HOME, SIGNUP, SIGNIN, POST, COMMENT}
