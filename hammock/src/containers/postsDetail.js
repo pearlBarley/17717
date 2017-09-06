@@ -13,7 +13,9 @@ import{
     findNodeHandle,
     Image,
     FlatList,
+    InteractionManager,
   }from 'react-native'
+import { UIManager} from 'NativeModules';
 import { NavigationActions } from 'react-navigation';
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
@@ -49,8 +51,32 @@ class postsDetail extends React.Component {
       // domNode.scrollIntoView()
       //let commentsFlow = findNodeHandle(this.refs.commentsFlow);
       //this._listRef.getNode().scrollToIndex({viewPosition: 0.5, index: 0});
-      this.refs.commentFlat.scrollToIndex({animated: true, index: 2})
+     
+      // this.refs.commentFlat.scrollToIndex({animated: true, index: 2})
       //this.refs.commentFlat.scrollToIndex({viewPosition: 0.5, index:0})
+      
+      //this.commentFlat.scrollToEnd();
+      //this.commentFlat.scrollToIndex({viewPosition:0,index:2});
+      //this.commentFlat.scrollToOffset({ animated: true, offset: 20000 });
+
+      // InteractionManager.runAfterInteractions(() => {
+      //     const handle = findNodeHandle(this.refs.test);
+      //     console.log(handle)
+      //     UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
+      //       console.log('x, y, width, height, pageX, pageY',x, y, width, height, pageX, pageY)
+      //         this.myScroll.scrollTo({x:x,y:y,animated:true});
+      //     });
+      //     //this.commentFlat.scrollToEnd();  //外层是ScrollView的话无效
+      // })
+
+
+      // this.measureTimer = setTimeout(() => {
+      //     this.commentFlat.measure((x, y, width, height, pageX, pageY) => {
+      //         console.log('x, y, width, height, pageX, pageY',x, y, width, height, pageX, pageY)
+
+      //         this.myScroll.scrollTo({x:pageX,y:pageY,animated:true});
+      //     })
+      // }, 0);
 
     }
     
@@ -72,6 +98,16 @@ class postsDetail extends React.Component {
       let [length, separator, header] = [50, 24, 0];
       return {length, offset: (length + separator) * index + header, index};
   }
+  commentFlatLayout (e) {
+    let { 
+      navigation: { state: { params:{ ifScroll } }}
+    } = this.props;
+    if(ifScroll){
+      let { layout: {x, y, width, height}} = e;
+      this.myScroll.scrollTo({ x:x, y:y, animated:true });
+    }
+
+  }
   render () {
     let { 
       stateData: { postDetail }, 
@@ -79,7 +115,10 @@ class postsDetail extends React.Component {
     } = this.props;
 
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView 
+         style={styles.container}
+         ref={(ref) => this.myScroll = ref}
+         >
         <View style={styles.multipleChoice}>
             <Picker
               selectedValue={this.state.sort}
@@ -158,7 +197,7 @@ class postsDetail extends React.Component {
 
 
 
-        <View style={styles.multipleChoice}>
+        <View style={styles.multipleChoice}  ref={(commentFlat) => this.commentFlat = commentFlat} onLayout={({nativeEvent:e})=>this.commentFlatLayout(e)}>
             <Picker
               selectedValue={this.state.comments}
               onValueChange={(comments) => this.setState({comments: comments})}
@@ -170,13 +209,16 @@ class postsDetail extends React.Component {
               <Picker.Item label="Controversial" value="CONTROVERSIAL" />
             </Picker>
         </View>
-
-        <FlatList
-          data={[{key: 'a'}, {key: 'b'},{key: 'c'},{key: 'f'},{key: 'r'}]}
-          renderItem={this._renderItem}
-          ref='commentFlat'
-          getItemLayout={this._getItemLayout}
-        />
+        
+        <View  >
+          <FlatList
+            data={[{key: 'a'}, {key: 'b'},{key: 'c'},{key: 'f'},{key: 'r'}]}
+            renderItem={this._renderItem}
+            //ref='commentFlat'
+            //ref={(commentFlat) => this.commentFlat = commentFlat}
+            getItemLayout={this._getItemLayout}
+          />
+        </View>
 
 
       </ScrollView>
