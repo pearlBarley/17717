@@ -46,11 +46,17 @@ class CommentAdd extends React.Component {
   addComment () {
     let { 
       stateData: { operation }, 
-      navigation: { navigate, dispatch,  state:{ params:{ postDetail } }  },
+      navigation: { navigate, dispatch,  state:{ params:{ postDetail, parentids } }  },
       actions: { addComment }
     } = this.props;
 
-    addComment(postDetail._id, this.state.commentContent)
+    let params = { 
+      postid: postDetail._id, 
+      parentids: parentids || '', 
+      content: this.state.commentContent
+    }
+
+    addComment(params)
     .then((data)=>{
       if(operation.result){
         console.log('add sucess')

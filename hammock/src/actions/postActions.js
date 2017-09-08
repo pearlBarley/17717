@@ -50,17 +50,19 @@ export function createResult (success) {
 
 
 //获取postdetail
-export function getpostDetail (postid) {
+export function getPostDetail (postid) {
+    console.log('getPostDetailgetPostDetailgetPostDetailgetPostDetailgetPostDetail')
+
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-        fetch(`${config.host}:${config.port}/api/getpostDetail?postid=${postid}`)
+        fetch(`${config.host}:${config.port}/api/getPostDetail?postid=${postid}`)
         // .then(res=>res.json()) 
         .then((data) => {
               dispatch(getPostDetailResult(data))
               resolve()
         })
         .catch((err) => {  
-          console.warn(err);  
+          console.warn('err',err);  
         })
         .done();
     })

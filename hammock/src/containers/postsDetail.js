@@ -51,10 +51,16 @@ class PostsDetail extends React.Component {
     let { 
       stateData: { postDetail }, 
       navigation: { navigate, dispatch, state: { params:{postid, ifScroll} }},
-      actions: { getpostDetail, getCommentData }
+      actions: { getPostDetail, getCommentData }
     } = this.props;
-    getpostDetail(postid)
+    // getPostDetail(postid).then(()=>{
+    //   getCommentData(postid)
+    // })
+    
+    getPostDetail(postid)
     getCommentData(postid)
+    
+    
     if(ifScroll){
       //jump to comment 
       // var domNode = ReactDOM.findDOMNode(this.refs.commentsFlow)
@@ -131,7 +137,7 @@ class PostsDetail extends React.Component {
       stateData: { postDetail }, 
       navigation: { navigate, dispatch }
     } = this.props;
-    dispatch(NavigationActions.navigate({ routeName: 'comment_add', params: {'title': 'Add comment','postDetail':postDetail}, }))
+    dispatch(NavigationActions.navigate({ routeName: 'comment_add', params: {'title': 'Add comment','postDetail':postDetail, 'parentids':''}, }))
   }
 
   render () {
@@ -141,7 +147,7 @@ class PostsDetail extends React.Component {
     } = this.props;
 
     return (
-      <View>
+      <View style={styles.containerView}>
         <ScrollView 
           style={styles.container}
           ref={(ref) => this.myScroll = ref}
@@ -304,6 +310,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(PostsDetail)
  */
 
 let styles = StyleSheet.create({
+  containerView: {
+    flex: 1,
+  },
   container: {
     backgroundColor: '#F7F6F6',
   },

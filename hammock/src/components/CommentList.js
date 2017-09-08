@@ -20,49 +20,24 @@ class CommentList extends React.Component {
   // _onPress = () => {
   //   this.props.onPressItem(this.props.id);
   // };
-  
-  
-  render () {
-    let commentData = this.props.commentData
-    console.log('commentData',commentData)
-    return (
-          <View ref="commentsFlow" style={styles.commentsFlow}>
-            <View style={styles.comments}>                   
-                <View style={styles.replyFrame}>
-                  <View style={styles.commentsTitle}>
-                    <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => this.startConversation()}>
-                    <View style={styles.commentsBody}>
-                      <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                      {/*<Image
-                        source={require('../assets/img/NavLogo.png')}
-                        style={styles.thumbnails}
-                      />*/}
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.commentsAction}>
-                        <View style={styles.commentsMoreAction}>
-                            <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                        </View>
-                        <View style={styles.reply}>
-                            <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                            <Text style={styles.replyText} >Reply</Text>
-                        </View>  
-                        <View style={styles.commentsVote}>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                            <Text style={styles.commentsVoteText} >16.0k</Text>
-                            <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                        </View>                       
-                  </View>
+  getCommentChild(item){
 
-                 <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
+    //if(item.children.length <= 0) return []
+    let recursionChild = []
+    if(item.children.length > 0) {
+      recursionChild = this.getCommentChild(item.children)
+    }
+   
+    return (
+      <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
                       <View style={styles.commentsTitle}>
                         <Text style={styles.commentsTitleText}>r/news • 2h</Text>
                       </View>
                       <TouchableOpacity onPress={() => this.startConversation()}>
                         <View style={styles.commentsBody}>
-                          <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
+                          <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >
+                            {item.content}
+                          </Text>                   
                           {/*<Image
                             source={require('../assets/img/NavLogo.png')}
                             style={styles.thumbnails}
@@ -84,40 +59,7 @@ class CommentList extends React.Component {
                             </View>                       
                       </View>
 
-                      <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
-                            <View style={styles.commentsTitle}>
-                              <Text style={styles.commentsTitleText}>r/news • 2h</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => this.startConversation()}>
-                              <View style={styles.commentsBody}>
-                                <Text style={styles.commentsBodyText} numberOfLines={4} ellipsizeMode='tail' selectable={true} >Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden Rule,Game theory and the Golden RuleGame theory and the Golden RuleGame theory and the Golden Rule</Text>                   
-                                {/*<Image
-                                  source={require('../assets/img/NavLogo.png')}
-                                  style={styles.thumbnails}
-                                />*/}
-                              </View>
-                            </TouchableOpacity>
-                            <View style={styles.commentsAction}>
-                                  <View style={styles.commentsMoreAction}>
-                                      <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
-                                  </View>
-                                  <View style={styles.reply}>
-                                      <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.replyText} >Reply</Text>
-                                  </View>  
-                                  <View style={styles.commentsVote}>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
-                                      <Text style={styles.commentsVoteText} >16.0k</Text>
-                                      <Icon style={styles.commentsVoteIcon} name="arrow-down" size={10} color= '#AAAAAA' />
-                                  </View>                       
-                            </View>
-                            
-                            <View style={styles.moreReply}>
-                              <Text style={styles.moreReplyText}>1 MORE REPLY</Text>
-                            </View>
-
-                        {/*sub sub replyFrame*/}
-                        </View> 
+                        {recursionChild}
 
                         <View style={styles.moreReply}>
                           <Text style={styles.moreReplyText}>12 MORE REPLY</Text>
@@ -125,11 +67,38 @@ class CommentList extends React.Component {
 
                   {/*sub replyFrame*/}
                   </View> 
+    )
 
-                 {/*replyFrame*/}
-                </View> 
+  }
+  
+  render () {
+    let commentData = this.props.commentData
+    console.log('commentData',commentData)
+    let index = commentData.index
+    let item = commentData.item
+    // author_id:"5992b100949b231f44e2e697"
+    // comment_ids:Array(0)
+    // content:"dsfsdfsfsdfsdfdsf"
+    // createdAt:"2017-09-07T08:37:30.219Z"
+    // oppose:0
+    // parent_ids:""
+    // parent_ids_test:Array(0)
+    // post_id:"599fa325a3623b3874cfde90"
+    // replier_ids:Array(0)
+    // tag_ids:Array(0)
+    // updatedAt:"2017-09-07T08:37:30.219Z"
+    // upvote:0
+    // _id:"59b1054ac706b17c22fafc99"
+    // children:[]
+    
+    let comment = getCommentChild(item)
 
-             {/*comments*/}
+    return (
+          <View ref="commentsFlow" style={styles.commentsFlow} key={index}>
+            <View style={styles.comments}> 
+
+                  {comment}
+
             </View>
         </View>
      )
@@ -231,3 +200,12 @@ let styles = StyleSheet.create({
       textAlign: 'center',
     }, 
 })        
+
+
+
+
+
+
+
+
+

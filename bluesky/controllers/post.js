@@ -78,10 +78,10 @@ let arrangeHomePostsData = (data, decoded) => {
     return tmp
 }
 //获取post详细信息
-exports.getpostDetail = (req, res) => {
+exports.getPostDetail = (req, res) => {
     var decoded = jwt.verify(req.query.token, 'shhhhh');
     
-    var postid = req.query.postid;             
+    var postid = req.query.postid;            
     var condition = {'_id': mongoose.Types.ObjectId(postid)}; 
     Post.find(condition, function(err, data){
         if (err) res.json({success: false, msg: err})

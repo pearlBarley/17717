@@ -8,11 +8,11 @@ import config from '../config/config'
 import { MyStorage } from '../storage/storage'
 
 //创建新帖
-export function addComment (postid, content) {
+export function addComment (params) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
         // const { username } = getState();
-        let params = { postid, content }
+        //let params = { postid, parentids, content }
         console.log('params',params)
         //fetch('http://192.168.1.126:8999/api/test').then((res)=>{console.log(res)})
         fetch(`${config.host}:${config.port}/api/addComment`, {
@@ -50,6 +50,7 @@ export function addCommentResult (success) {
 
 //获取评论
 export function getCommentData (postid) {
+  console.log('getCommentDatagetCommentDatagetCommentDatagetCommentData')
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
         fetch(`${config.host}:${config.port}/api/getCommentData?postid=${postid}`)

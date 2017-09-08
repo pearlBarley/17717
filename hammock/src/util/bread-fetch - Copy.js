@@ -2,7 +2,8 @@
 var oldFetch = global.fetch
 
 var newFetch = function (url, options={}) {
-  let request = {
+  //参数保存在this.request多个请求同时进行时会出现只重复请求最后一个请求，改进版把request和response当做参数传递，保证各个请求的数据都是各自的数据
+  this.request = {
       url,
       options
   }
@@ -14,7 +15,7 @@ var newFetch = function (url, options={}) {
 
     if (this.interceptors.length > 0) {
         //执行请求前的拦截操作
-        this.runInterceptors(0, request)
+        this.runInterceptors(0)
         .then(req => {
             oldFetchFun(this,req)
             .then((res)=>{
@@ -25,7 +26,7 @@ var newFetch = function (url, options={}) {
             });
         })
     } else {
-        oldFetchFun(this, request)
+        oldFetchFun(this,this.request)
         .then((res)=>{
             resolve(res);
         })
@@ -56,12 +57,12 @@ var oldFetchFun = function (that, request) {
         .then(res => {
             console.log('oldFetch res json',res)
             //执行请求后的拦截操作
-            let response = res
+            that.response = res
             if (that.interceptors_after.length > 0) {
-                that.runInterceptorsAfter(0, response)
-                .then(data => {
+                that.runInterceptorsAfter(0)
+                .then(res => {
                     // clearTimeout(timer)
-                    resolve(data);
+                    resolve(res);
                 })
             }
         })
@@ -88,7 +89,7 @@ breadFetch.prototype.newFetch = newFetch  //new的时候也可以改变this指�
 //fetch拦截器
 breadFetch.prototype.interceptors = []
 breadFetch.prototype.interceptors_after = []
-breadFetch.prototype.runInterceptors = function (i, request) {
+breadFetch.prototype.runInterceptors = function (i) {
   var _that = this
   if(i===0) this.interceptors_after = []
 //   if (i >= this.interceptors.length) return
@@ -100,26 +101,26 @@ breadFetch.prototype.runInterceptors = function (i, request) {
 //       _that.runInterceptors(++i)
 //   })
   return new Promise((resolve, reject) => {
-    if (i >= this.interceptors.length) resolve(request)
-    this.interceptors[i](request, function (callback) {
+    if (i >= this.interceptors.length) resolve(this.request)
+    this.interceptors[i](this.request, function (callback) {
         if(callback){
             //callback 存入请求后执行的数组
             _that.interceptors_after.push(callback)
         }
-        _that.runInterceptors(++i, request).then(req => {
+        _that.runInterceptors(++i).then(req => {
             resolve(req)
         })   
     })
   })
 }
 
-breadFetch.prototype.runInterceptorsAfter = function (i, response) {
+breadFetch.prototype.runInterceptorsAfter = function (i) {
   var _that = this
   //if (i >= this.interceptors_after.length) return
   return new Promise((resolve, reject) => {
-    if (i >= this.interceptors_after.length) resolve(response)
-    this.interceptors_after[i](response, function () {
-        _that.runInterceptorsAfter(++i, response).then(res => {
+    if (i >= this.interceptors_after.length) resolve(this.response)
+    this.interceptors_after[i](this.response, function () {
+        _that.runInterceptorsAfter(++i).then(res => {
             resolve(res)
         })   
     })

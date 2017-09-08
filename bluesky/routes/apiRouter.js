@@ -19,7 +19,7 @@ router.post('/logout', apiController.account.logout);
 router.post('/signup', apiController.account.signup);
 router.post('/createPost', apiController.post.createPost);
 router.get('/getHomePosts', apiController.post.getHomePosts);
-router.get('/getpostDetail', apiController.post.getpostDetail);
+router.get('/getPostDetail', apiController.post.getPostDetail);
 router.post('/votePost', apiController.post.votePost);
 router.post('/addComment', apiController.comment.addComment);
 router.get('/getCommentData', apiController.comment.getCommentData);
