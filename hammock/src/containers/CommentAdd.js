@@ -46,7 +46,7 @@ class CommentAdd extends React.Component {
   addComment () {
     let { 
       stateData: { operation }, 
-      navigation: { navigate, dispatch,  state:{ params:{ postDetail, parentids } }  },
+      navigation: { navigate, dispatch,  state:{ params:{ postDetail, parentids, getNewCommentData } }  },
       actions: { addComment }
     } = this.props;
 
@@ -59,7 +59,8 @@ class CommentAdd extends React.Component {
     addComment(params)
     .then((data)=>{
       if(operation.result){
-        console.log('add sucess')
+        console.log('add success')
+        getNewCommentData()
         this.props.navigation.goBack()
         //dispatch(NavigationActions.navigate({ routeName: 'posts_detail', params: {postid:data._id}}))
         //this.showPopup(true)
@@ -75,12 +76,12 @@ class CommentAdd extends React.Component {
   }
 
   render () {
-    const { navigate, dispatch, state:{ params:{title, postDetail} } } = this.props.navigation;
+    const { navigate, dispatch, state:{ params:{title, postDetail, replyToWhat} } } = this.props.navigation;
 
     return (
       <View style={styles.container}>
         <View style={styles.multipleChoice}>
-            <Text style={styles.multipleChoiceText}>{postDetail.content}</Text>
+            <Text style={styles.multipleChoiceText}>{replyToWhat?replyToWhat:postDetail.content}</Text>
         </View>
         <TextInput
           autoFocus={true} 

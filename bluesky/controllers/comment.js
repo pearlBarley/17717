@@ -49,10 +49,10 @@ let sortCommentData = (data, pid = '') => {
 
     for(let i=0; i<data.length; i++){
 
-       if(data[i].parent_ids === pid){
+       if(data[i]._doc.parent_ids === pid){
            // flag = false
-           let newPid = pid = '' ? (data[i]._id) : (pid + ',' + data[i]._id)
-           data[i].children = sortCommentData(data, newPid)
+           let newPid = pid === '' ? (data[i]._doc._id.toString()) : (pid + ',' + data[i]._doc._id.toString())
+           data[i]._doc.children = sortCommentData(data, newPid)
            result.push(data[i])
        } 
     }
@@ -68,10 +68,10 @@ let sortCommentDataByObject = (data) => {
     let obj = {}
 
     for(let i=0; i<data.length; i++){
-        if(!obj[data.parent_ids]){
-            obj[data.parent_ids] = []
+        if(!obj[data._doc.parent_ids]){
+            obj[data._doc.parent_ids] = []
         }
-        obj[data.parent_ids].push(data[i])
+        obj[data._doc.parent_ids].push(data[i])
     }
     
     let result = subSortByObject(obj)
@@ -84,8 +84,8 @@ let subSortByObject = (obj, pid = '') => {
     let tmp = obj[pid]     //pid相同的数据数组
 
     for(let [i, v] of tmp){  
-        let newPid = pid = '' ? (v._id) : (pid + ',' + v._id)
-        v.children = subSortByObject(obj, newPid)
+        let newPid = pid === '' ? (v._doc._id) : (pid + ',' + v._doc._id)
+        v._doc.children = subSortByObject(obj, newPid)
         result.push(v)
     }
     return result

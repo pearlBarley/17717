@@ -20,16 +20,18 @@ class CommentList extends React.Component {
   // _onPress = () => {
   //   this.props.onPressItem(this.props.id);
   // };
-  getCommentChild(item){
+  getCommentChild(item, ifFirst, childKey){
 
     //if(item.children.length <= 0) return []
     let recursionChild = []
     if(item.children.length > 0) {
-      recursionChild = this.getCommentChild(item.children)
+      recursionChild = item.children.map((value,index,arr)=>{
+         return this.getCommentChild(value, false, index)
+      })
     }
-   
+    let replyFrameStyles = ifFirst? styles.replyFrame : [styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]
     return (
-      <View style={[styles.replyFrame,{ borderLeftColor: '#DDD', borderLeftWidth: 1, paddingLeft: 15, }]}>
+      <View style={replyFrameStyles} key={childKey}>
                       <View style={styles.commentsTitle}>
                         <Text style={styles.commentsTitleText}>r/news • 2h</Text>
                       </View>
@@ -48,9 +50,11 @@ class CommentList extends React.Component {
                             <View style={styles.commentsMoreAction}>
                                 <Icon name="ellipsis-h" size={15} color= '#AAAAAA' />
                             </View>
-                            <View style={styles.reply}>
-                                <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
-                                <Text style={styles.replyText} >Reply</Text>
+                            <View>
+                                <TouchableOpacity style={styles.reply} onPress={()=>this.reply(item.parent_ids,item._id,item.content)}>
+                                    <Icon style={styles.replyIcon} name="reply" size={10} color= '#AAAAAA' />
+                                    <Text style={styles.replyText} >Reply</Text>
+                                </TouchableOpacity>
                             </View>  
                             <View style={styles.commentsVote}>
                                 <Icon style={styles.commentsVoteIcon} name="arrow-up" size={10} color= '#AAAAAA' />
@@ -71,6 +75,13 @@ class CommentList extends React.Component {
 
   }
   
+  reply (parent_ids, _id, content) {
+    let this_parent_ids = parent_ids === ''? _id: parent_ids+','+_id
+    //alert(this_parent_ids)
+    let replyFun = this.props.reply
+    replyFun(this_parent_ids, content)
+  }
+
   render () {
     let commentData = this.props.commentData
     console.log('commentData',commentData)
@@ -91,7 +102,7 @@ class CommentList extends React.Component {
     // _id:"59b1054ac706b17c22fafc99"
     // children:[]
     
-    let comment = getCommentChild(item)
+    let comment = this.getCommentChild(item, true, index)
 
     return (
           <View ref="commentsFlow" style={styles.commentsFlow} key={index}>

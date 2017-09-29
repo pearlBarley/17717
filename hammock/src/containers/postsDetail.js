@@ -97,6 +97,13 @@ class PostsDetail extends React.Component {
     }
     
   }
+  componentWillUpdate () {
+    // let {
+    //   navigation: { state: { params:{postid} }},
+    //   actions: {getCommentData }
+    // } = this.props;
+    // getCommentData(postid)
+  }
   startConversation () {
     alert(1111)
   }
@@ -106,6 +113,7 @@ class PostsDetail extends React.Component {
           /*onPressItem={this._onPressItem}
           selected={!!this.state.selected.get(item.id)}*/
           commentData={item}
+          reply={(parentids, replyToWhat)=>this.showAddComment('Reply to comment', parentids, replyToWhat)}
         />
       )
   }
@@ -132,12 +140,20 @@ class PostsDetail extends React.Component {
   }
   focus(){}
   blur(){}
-  showAddComment(){
+  showAddComment(title, parentids, replyToWhat){
     let { 
       stateData: { postDetail }, 
-      navigation: { navigate, dispatch }
+      navigation: { navigate, dispatch, state: { params:{postid}} },
+      actions: {getCommentData }
     } = this.props;
-    dispatch(NavigationActions.navigate({ routeName: 'comment_add', params: {'title': 'Add comment','postDetail':postDetail, 'parentids':''}, }))
+    dispatch(NavigationActions.navigate({ routeName: 'comment_add', 
+                                          params: {'title': title,
+                                                   'postDetail':postDetail,
+                                                   'replyToWhat':replyToWhat, 
+                                                   'parentids':parentids, 
+                                                   'getNewCommentData':()=>getCommentData(postid),
+                                                  }, 
+                                        }))
   }
 
   render () {
@@ -247,7 +263,7 @@ class PostsDetail extends React.Component {
             <FlatList
               //data={[{key: 'a'}, {key: 'b'},{key: 'c'},{key: 'f'},{key: 'r'}]}
               data={commentData}
-              renderItem={this._renderItem}
+              renderItem={this._renderItem.bind(this)}
               //ref='commentFlat'
               //ref={(commentFlat) => this.commentFlat = commentFlat}
               getItemLayout={this._getItemLayout}
@@ -256,7 +272,7 @@ class PostsDetail extends React.Component {
 
         </ScrollView>
         <View style={styles.bottomView} >
-          <TouchableWithoutFeedback onPress={()=>this.showAddComment()}>
+          <TouchableWithoutFeedback onPress={()=>this.showAddComment('Add comment', '')}>
             <View>
               <Text ref='inputComment' style={styles.inputComment}>
                 Add a comment
@@ -315,6 +331,7 @@ let styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#F7F6F6',
+    marginBottom: 40,
   },
   multipleChoice: {
     flexDirection: 'row',
