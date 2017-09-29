@@ -7,7 +7,7 @@
 ![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo3.gif)
 ![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo4.gif)
 ![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo5.gif)
-![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo6.gif)
+![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo6.png)
 ### HOW TO START
 
 #### START THE EXPO PROJECT bamboo
