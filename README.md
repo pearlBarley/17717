@@ -3,11 +3,11 @@
 
 ### DEMO
 
-![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo.gif)  
-
-
+![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo.gif)
 ![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo3.gif)
-
+![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo4.gif)
+![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo5.gif)
+![image](https://github.com/pearlBarley/17717/blob/master/hammock/src/assets/img/RNdemo6.gif)
 ### HOW TO START
 
 #### START THE EXPO PROJECT bamboo
