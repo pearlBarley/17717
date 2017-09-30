@@ -11,7 +11,7 @@
 ### HOW TO START
 
 #### START THE EXPO PROJECT bamboo
-* the expo project creact by create-react-native-app -- a npm module.
+* the expo project create by create-react-native-app -- a npm module.
 * Create React Native App will allow users to start React Native project to development and debugging , even they install Xcode or Android Studio not yet in the Linux or Windows environment.
 * please visit [create-react-native-app](https://github.com/react-community/create-react-native-app) for detail
 
@@ -33,6 +33,25 @@ $ yarn start
 ##### EFFECT
 the app will display in your simulator or your phone
 
+#### START THE NODE PROJECT bluesky
+* the bluesky project create by node.
+* use mongodb database and redis cache
+
+##### NECESSARY ENVIROMENT
+
+* node
+* npm or yarn
+* mongodb
+* redis
+
+##### COMMAND
+```
+$ cd bluesky
+$ yarn install
+$ yarn start
+```
+##### EFFECT
+node service start
 
 #### START THE NORMAL REACT NATIVE PROJECT hammock
 the normal react native project create by commond call 'react-native init'
